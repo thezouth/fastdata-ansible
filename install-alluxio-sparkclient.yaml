@@ -1,0 +1,7 @@
+---
+- hosts: spark
+  vars:
+    spark_alluxio_install: true
+    spark_restart: true
+  roles:
+    - spark

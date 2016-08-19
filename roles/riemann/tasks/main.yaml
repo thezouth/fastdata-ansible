@@ -1,0 +1,13 @@
+---
+- include: install.yaml
+  when: riemann_install
+
+- include: start.yaml
+  when: riemann_start
+
+- include: stop.yaml
+  when: riemann_stop
+
+- include: uninstall.yaml
+  when: riemann_uninstall
+

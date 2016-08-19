@@ -1,0 +1,17 @@
+---
+- include: download.yaml
+  tags:
+    - spark-download-archive
+    
+- include: usergroup.yaml
+  tags:
+    - spark-add-usergroup
+
+- include: deploy.yaml
+  tags: 
+    - spark-deploy-package
+
+- include: standalone.yaml
+  when: spark_cluster_mode == "standalone"
+  tags:
+    - spark-configure-cluster

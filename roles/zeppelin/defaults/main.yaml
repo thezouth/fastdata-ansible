@@ -1,0 +1,26 @@
+---
+zeppelin_archive_url: http://www-eu.apache.org/dist/zeppelin/zeppelin-0.6.1/zeppelin-0.6.1-bin-netinst.tgz
+zeppelin_install_root_dir: /opt
+zeppelin_home_dir: /opt/zeppelin
+zeppelin_user: zeppelin
+zeppelin_group: zeppelin
+zeppelin_port: 8080
+
+# Possible choices: [ manual, upstart ]
+zeppelin_service_control: manual
+
+# Essential Zeppelin Interpreters (Add others if you need more)
+zeppelin_interpreters:
+    - alluxio
+    - cassandra
+    - md
+    - file
+    - python
+    - shell
+    - spark
+    - jdbc
+
+# Zeppelin actions
+zeppelin_install: false
+zeppelin_start: false
+zeppelin_stop: false

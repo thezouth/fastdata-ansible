@@ -1,0 +1,4 @@
+{{ hostvars[alluxio_master_node]['ansible_eth0']['ipv4']['address'] }}
+{% for alluxio_worker in groups['alluxio-workers'] %}
+{{ hostvars[alluxio_worker]['ansible_eth0']['ipv4']['address'] }}
+{% endfor %}

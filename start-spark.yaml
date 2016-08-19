@@ -1,0 +1,6 @@
+---
+- hosts: spark
+  vars:
+    spark_start: true
+  roles:
+    - spark

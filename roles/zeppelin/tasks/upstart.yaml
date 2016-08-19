@@ -1,0 +1,20 @@
+---
+- fail: msg="Upstart service control still was unsupported in this version"
+
+- name: install upstart script
+  template: src="zeppelin.conf.j2" dest="/etc/init/zeppelin.conf"
+  become: true
+
+- name: start zeppelin service
+  service: name=zeppelin state=started
+  when: zeppelin_start
+  become: true
+  tags:
+    - zeppelin-start
+
+- name: stop zeppelin service
+  service: name=zeppelin state=stopped
+  when: zeppelin_stop
+  become: true
+  tags:
+    - zeppelin-stop

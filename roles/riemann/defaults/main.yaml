@@ -1,0 +1,11 @@
+---
+riemann_version: 0.2.11
+riemann_deb_file: "riemann_{{ riemann_version }}_all.deb"
+riemann_deb_url: "https://aphyr.com/riemann/{{ riemann_deb_file }}"
+riemann_deb_path: "./{{ riemann_deb_file }}"
+
+# Riemann actions
+riemann_install: false
+riemann_start: false
+riemann_stop: false
+riemann_uninstall: false

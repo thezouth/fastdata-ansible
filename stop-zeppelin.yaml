@@ -1,0 +1,6 @@
+---
+- hosts: zeppelin
+  vars:
+    zeppelin_stop: true
+  roles:
+    - zeppelin

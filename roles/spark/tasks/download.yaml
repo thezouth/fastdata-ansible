@@ -1,0 +1,8 @@
+---
+- name: download spark archive
+  local_action: get_url
+  args:
+    url: "{{ spark_archive_url }}"
+    dest: "{{ spark_archive_path }}"
+  run_once: true
+  become: true

@@ -1,0 +1,6 @@
+---
+- hosts: alluxio
+  vars:
+    alluxio_stop: true
+  roles:
+    - alluxio

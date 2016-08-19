@@ -1,0 +1,9 @@
+---
+- set_fact: zeppelin_config_file="{{ zeppelin_home_dir }}/conf/zeppelin-env.sh"
+
+- name: change ZEPPELIN_PORT to {{ zeppelin_port }}
+  lineinfile:
+    dest: "{{ zeppelin_config_file }}"
+    regexp: "^export ZEPPELIN_PORT="
+    insertafter: "^# export ZEPPELIN_PORT"
+    line: "export ZEPPELIN_PORT={{ zeppelin_port }}"

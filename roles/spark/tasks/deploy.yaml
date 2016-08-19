@@ -1,0 +1,32 @@
+---
+- name: find spark archive root path
+  local_action: shell tar ztf {{ spark_archive_path }} | head -1 | xargs basename
+  register: sparkarchiveroot
+  run_once: true
+
+- name: set spark_install_dir variable
+  set_fact: spark_install_dir="{{ spark_install_root_dir }}/{{ sparkarchiveroot.stdout }}"
+
+- name: unarchive spark archive
+  unarchive:
+    src: "{{ spark_archive_path }}"
+    dest: "{{ spark_install_root_dir }}"
+    owner: "{{ spark_user }}"
+    creates: "{{ spark_install_dir }}/conf/spark-env.sh"
+  become: true
+
+- name: make symbol link to spark
+  file:
+    src: "{{ spark_install_dir }}"
+    dest: "{{ spark_home_dir }}"
+    force: yes
+    owner: "{{ spark_user }}"
+    group: "{{ spark_group }}"
+    state: link
+  become: true
+  
+- name: add spark_home environment variable
+  template:
+    src: spark-home-env.j2
+    dest: /etc/profile.d/Z99-spark-home.sh
+  become: true

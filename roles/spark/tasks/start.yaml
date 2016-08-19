@@ -1,0 +1,16 @@
+---
+- include: spark_home.yaml
+
+- name: start spark master service
+  shell: sudo -u "{{ spark_user }}" "{{ spark_home_env }}/sbin/start-master.sh"
+  delegate_to: "{{ spark_standalone_master }}"
+  run_once: true
+  tags:
+    - spark-start-master
+
+- name: start spark worker services
+  shell: sudo -u "{{ spark_user }}" "{{ spark_home_env }}/sbin/start-slaves.sh"
+  delegate_to: "{{ spark_standalone_master }}"
+  run_once: true
+  tags:
+    - spark-start-workers

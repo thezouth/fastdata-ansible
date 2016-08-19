@@ -1,0 +1,9 @@
+---
+- name: check spark_home_dir exists
+  stat: path="{{ spark_home_dir }}"
+  register: sparkhomedir
+
+- assert: { that: "sparkhomedir.stat.exists" }
+
+- name: set spark_home_env variable
+  set_fact: spark_home_env="{{ spark_home_dir }}"

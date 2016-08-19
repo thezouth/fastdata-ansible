@@ -1,0 +1,44 @@
+---
+- name: download jdk archive from public Oracle site
+  local_action: get_url
+  args:
+    url: "{{ java_oracle_pubotn_url }}"
+    dest: "{{ java_archive_path }}"
+    headers: "Cookie: oraclelicense=accept-securebackup-cookie"
+    validate_certs: no
+  run_once: true
+  become: true
+
+- name: check {{ java_install_dir }} path
+  stat:
+    path: "{{ java_install_dir }}"
+  register: checkinstalldir
+
+- name: create {{ java_install_dir }} path
+  file:
+    path: "{{ java_install_dir }}"
+    state: directory
+  when: not checkinstalldir.stat.exists
+  become: true
+
+- name: find jdk home directory name
+  local_action: shell tar ztf {{ java_archive_path }} | head -1 | xargs basename
+  run_once: true
+  register: javahomedirname
+
+- name: set java_home_dir variable
+  set_fact: java_home_dir="{{ java_install_dir }}/{{ javahomedirname.stdout }}"
+
+- name: unarchive file to destination
+  unarchive:
+    src: "{{ java_archive_path }}"
+    dest: "{{ java_install_dir }}"
+    creates: "{{ java_home_dir }}/bin/java"
+  register: installjavasdk 
+  become: true
+
+- name: update alternatives
+  shell: update-alternatives --install /usr/bin/{{ item }} {{ item }} {{ java_home_dir }}/bin/{{ item }} 100
+  with_items: "{{ java_update_alternatives_items }}"
+  when: installjavasdk.changed
+  become: true

@@ -1,0 +1,6 @@
+---
+- include: manual.yaml
+  when: zeppelin_service_control == 'manual'
+
+- include: upstart.yaml
+  when: zeppelin_service_control == 'upstart'

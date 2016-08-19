@@ -1,0 +1,8 @@
+---
+- include: install.yaml
+  when: zeppelin_install
+  become: true
+
+- include: servicectl.yaml
+  when: zeppelin_start or zeppelin_stop
+  become: true

@@ -1,0 +1,9 @@
+---
+- name: assign SPARK_MASTER_HOST with address
+  lineinfile:
+    dest: "{{ spark_home_dir }}/conf/spark-env.sh"
+    regexp: "^export SPARK_MASTER_HOST="
+    insertafter: "#export SPARK_MASTER_HOST="
+    line: "export SPARK_MASTER_HOST=\"{{ ansible_eth0.ipv4.address }}\""
+  when: was_spark_master
+  become: true

@@ -1,0 +1,7 @@
+---
+- name: uninstall riemann
+  apt:
+    name: riemann
+    state: absent
+  become: true
+

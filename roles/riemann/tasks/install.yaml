@@ -1,0 +1,18 @@
+---
+- name: download riemann {{ riemann_version }}
+  local_action: get_url
+  args:
+    url: "{{ riemann_deb_url }}"
+    dest: "{{ riemann_deb_path }}"
+  run_once: true
+
+- name: copy {{ riemann_deb_path }} to remote
+  copy:
+    src: "{{ riemann_deb_path }}"
+    dest: "{{ riemann_deb_path }}"
+
+- name: install riemann
+  apt:
+    deb: "{{ riemann_deb_path }}"
+  become: true
+

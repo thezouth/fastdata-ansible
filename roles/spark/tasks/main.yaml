@@ -1,0 +1,14 @@
+---
+- include: install.yaml
+  when: spark_install
+
+- include: alluxio.yaml
+  when: spark_alluxio_install
+
+- include: stop.yaml
+  when: spark_stop or spark_restart
+  become: true
+  
+- include: start.yaml
+  when: spark_start or spark_restart
+  become: true

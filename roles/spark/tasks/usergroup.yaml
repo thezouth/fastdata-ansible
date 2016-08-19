@@ -1,0 +1,8 @@
+---
+- name: add spark group
+  group: name="{{ spark_group }}"
+  become: true
+
+- name: add spark user
+  user: name="{{ spark_user }}"  group="{{ spark_group }}"
+  become: true

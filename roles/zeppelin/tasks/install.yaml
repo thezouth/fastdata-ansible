@@ -1,0 +1,59 @@
+---
+- name: download zeppelin archive
+  local_action: get_url
+  args:
+    url: "{{ zeppelin_archive_url }}"
+    dest: "{{ zeppelin_archive_path }}"
+
+- name: create zeppelin group
+  group: name="{{ zeppelin_group }}"
+
+- name: create zeppelin user
+  user: name="{{ zeppelin_user }}" group="{{ zeppelin_group }}"
+
+- name: find zeppelin root archive
+  local_action: shell tar ztf {{ zeppelin_archive_path }} | head -1 | xargs basename
+  register: zeppelinrootarchive
+
+- name: set zeppelin_install_dir variable
+  set_fact: zeppelin_install_dir="{{ zeppelin_install_root_dir }}/{{ zeppelinrootarchive.stdout }}"
+  
+- name: unarchive zepplin archive
+  unarchive:
+    src: "{{ zeppelin_archive_path }}"
+    dest: "{{ zeppelin_install_root_dir }}"
+    owner: "{{ zeppelin_user }}"
+    group: "{{ zeppelin_group }}"
+    creates: "{{ zeppelin_install_dir }}/bin/zeppelin-daemon.sh"
+  register: 
+
+- name: set {{ zeppelin_home_dir }} link to zeppelin_install_dir directory
+  file:
+    src: "{{ zeppelin_install_dir }}"
+    dest: "{{ zeppelin_home_dir }}"
+    force: yes
+    owner: "{{ zeppelin_user }}"
+    group: "{{ zeppelin_group }}"
+    state: link
+
+- name: add ZEPPELIN_HOME environment variable
+  template:
+    src: zeppelin-home-env.sh.j2
+    dest: /etc/profile.d/Z99-zeppelin-home-env.sh
+
+- name: copy zeppelin-env.sh.template to zeppelin-env.sh
+  copy:
+    src: "{{ zeppelin_home_dir }}/conf/zeppelin-env.sh.template"
+    dest: "{{ zeppelin_home_dir }}/conf/zeppelin-env.sh"
+    remote_src: true
+    owner: "{{ zeppelin_user }}"
+    group: "{{ zeppelin_group }}"
+  
+- include: configuration.yaml
+  
+- name: install interpreters
+  shell: sudo -u "{{ zeppelin_user }}" ./bin/install-interpreter.sh --name "{{ item }}"
+  args:
+    chdir: "{{ zeppelin_home_dir }}"
+    creates: "{{ zeppelin_install_dir }}/interpreter/{{ item }}"
+  with_items: "{{ zeppelin_interpreters }}"

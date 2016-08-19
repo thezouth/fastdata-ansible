@@ -1,0 +1,10 @@
+---
+spark_standalone_master: "{{ groups['spark-master'][0] }}"
+was_spark_master: "{{ inventory_hostname in groups['spark-master'] }}"
+was_spark_slave: "{{ inventory_hostname in groups['spark-workers'] }}"
+
+spark_archive_name: "{{ spark_archive_url | basename }}"
+spark_archive_path: "{{ archive_storage_path|default('./') }}/{{ spark_archive_name }}"
+
+spark_alluxio_clientjar_name: "{{ spark_alluxio_clientjar_url | basename }}"
+spark_alluxio_clientjar_path:  "{{ archive_storage_path|default('./') }}/{{ spark_alluxio_clientjar_name }}"

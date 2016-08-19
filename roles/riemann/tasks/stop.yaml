@@ -1,0 +1,7 @@
+---
+- name: stop riemann
+  service:
+    name: riemann
+    state: stopped
+  become: true
+

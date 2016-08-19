@@ -1,0 +1,4 @@
+---
+- name: install interpreters
+  shell: sudo -u "{{ zeppelin_user }}" ./bin/install-interpreter.sh --name "{{ zeppelin_interpreters | join(',') }}"
+  become: true

@@ -1,0 +1,6 @@
+---
+java_oracle_pubotn_url: http://download.oracle.com/otn-pub/java/jdk/8u77-b03/jdk-8u77-linux-x64.tar.gz
+java_archive_name: "{{ java_oracle_pubotn_url | basename }}"
+java_archive_path: "{{ archive_storage_path|default('./') }}/{{ java_archive_name }}"
+java_install_dir: /opt/java
+java_update_alternatives_items: [ 'java', 'javac', 'jar' ]

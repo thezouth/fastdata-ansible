@@ -1,0 +1,6 @@
+---
+- hosts: zeppelin
+  vars:
+    zeppelin_install: true
+  roles:
+    - zeppelin

@@ -1,0 +1,17 @@
+---
+- name: start zeppelin daemon
+  command: sudo -u "{{ zeppelin_user }}" ./bin/zeppelin-daemon.sh start
+  args:
+    chdir: "{{ zeppelin_home_dir }}"
+  when: zeppelin_start
+  register: zeppelinstart
+  tags:
+    - zeppelin-start-service
+
+- name: stop zeppelin daemon
+  command: sudo -u "{{ zeppelin_user }}" ./bin/zeppelin-daemon.sh stop
+  args:
+    chdir: "{{ zeppelin_home_dir }}"
+  when: zeppelin_stop
+  tags:
+    - zeppelin-stop-service

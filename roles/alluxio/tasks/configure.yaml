@@ -1,0 +1,15 @@
+---
+# Configure worker nodes
+- set_fact: worker_opts_bundled="{{ lookup('template', 'bundleprops.j2', convert_data=False) }}"
+  when: was_alluxio_slave
+
+- name: configure worker java options
+  lineinfile:
+    dest: "{{ alluxio_home_dir }}/conf/alluxio-env.sh"
+    regexp: "^ALLUXIO_WORKER_JAVA_OPTS="
+    insertafter: "^#ALLUXIO_WORKER_JAVA_OPTS="
+    line: "ALLUXIO_WORKER_JAVA_OPTS=\"{{ worker_opts_bundled }}\""
+    owner: "{{ alluxio_user }}"
+    group: "{{ alluxio_group }}"
+  when: was_alluxio_slave
+  become: true

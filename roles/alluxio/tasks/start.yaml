@@ -1,0 +1,10 @@
+---
+- include: alluxio_home.yaml
+
+- name: start cluster
+  shell: sudo -u "{{ alluxio_user }}" ./bin/alluxio-start.sh all
+  args:
+    chdir: "{{ alluxio_home_env }}"
+  when: alluxio_start and was_alluxio_master
+  run_once: true
+  become: true

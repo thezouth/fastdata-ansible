@@ -1,0 +1,16 @@
+---
+- include: spark_home.yaml
+
+- name: stop spark worker services
+  shell: sudo -u "{{ spark_user }}" "{{ spark_home_env }}/sbin/stop-slaves.sh"
+  delegate_to: "{{ spark_standalone_master }}"
+  run_once: true
+  tags:
+    - spark-stop-workers
+
+- name: stop spark master service
+  shell: sudo -u "{{ spark_user }}" "{{ spark_home_env }}/sbin/stop-master.sh"
+  delegate_to: "{{ spark_standalone_master }}"
+  run_once: true
+  tags:
+    - spark-stop-master

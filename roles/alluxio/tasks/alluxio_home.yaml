@@ -1,0 +1,9 @@
+---
+- name: check alluxio_home_dir exists
+  stat: path="{{ alluxio_home_dir }}"
+  register: alluxiohomedir
+
+- assert: { that: "alluxiohomedir.stat.exists" }
+
+- name: set alluxio_home_env variable
+  set_fact: alluxio_home_env="{{ alluxio_home_dir }}"

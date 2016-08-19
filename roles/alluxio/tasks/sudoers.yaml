@@ -1,0 +1,19 @@
+---
+- name: copy sudoers file for saftey
+  command: cp -f /etc/sudoers /etc/sudoers.tmp
+
+- name: create sudoers file backup
+  command: cp -f /etc/sudoers /etc/sudoers.bak
+
+- name: make sure we can sudo as alluxio user
+  lineinfile:
+    dest: /etc/sudoers.tmp
+    insertafter: "^root"
+    line: "{{ alluxio_user }} ALL=(ALL) NOPASSWD: ALL"
+    state: present
+
+# - name: also make sure ssh-agent works via sudo
+#   lineinfile: dest=/etc/sudoers.tmp state=present regexp='^Defaults env_keep\+\=SSH_AUTH_SOCK' line='Defaults env_keep+=SSH_AUTH_SOCK'
+
+- name: Final sudoers file check
+  shell: visudo -q -c -f /etc/sudoers.tmp && cp -f /etc/sudoers.tmp /etc/sudoers

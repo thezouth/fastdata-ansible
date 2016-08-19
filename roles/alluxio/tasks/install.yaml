@@ -1,0 +1,90 @@
+---
+- name: download alluxio archive
+  local_action: get_url
+  args:
+    url: "{{ alluxio_archive_url }}"
+    dest: "{{ alluxio_archive_path }}"
+  run_once: true
+  become: true
+
+- name: find alluxio root path
+  local_action: shell tar ztf {{ alluxio_archive_path }} | head -1 | xargs basename
+  register: alluxioarchiveroot
+  run_once: true
+
+- name: set alluxio_install_dir variable
+  set_fact: alluxio_install_dir="{{ alluxio_install_root_dir }}/{{ alluxioarchiveroot.stdout }}"
+
+- name: create alluxio group
+  group: name="{{ alluxio_group }}"
+  become: true
+
+- name: create alluxio user
+  user: name="{{ alluxio_user }}" group="{{ alluxio_group }}"
+  become: true
+
+- include: sudoers.yaml
+  become: true
+  tags:
+    - alluxio-install-sudoers
+
+- name: unarchive alluxio archive
+  unarchive:
+    src: "{{ alluxio_archive_path }}"
+    dest: "{{ alluxio_install_root_dir }}"
+    owner: "{{ alluxio_user }}"
+    group: "{{ alluxio_group }}"
+    creates: "{{ alluxio_install_dir }}/bin/alluxio"
+  become: true
+
+- name: make symbol link to alluxio
+  file:
+    src: "./{{ alluxioarchiveroot.stdout }}"
+    dest: "{{ alluxio_home_dir }}"
+    force: yes
+    owner: "{{ alluxio_user }}"
+    group: "{{ alluxio_group }}"
+    state: link
+  become: true
+
+- name: add ALLUXIO_HOME environment variable
+  template:
+    src: alluxio-home-env.j2
+    dest: /etc/profile.d/Z99-alluxio-home.sh
+  become: true
+
+- include: credentials.yaml
+
+- name: initialize alluxio master node
+  shell: sudo -u "{{ alluxio_user }}" ./bin/alluxio bootstrapConf {{ ansible_eth0.ipv4.address }} {{ alluxio_underfsstorage }}
+  args:
+    chdir: "{{ alluxio_home_dir }}"
+  when: was_alluxio_master
+  run_once: true
+  become: true
+  
+- name: format alluxio master node
+  shell: sudo -u "{{ alluxio_user }}" ./bin/alluxio format
+  args:
+    chdir: "{{ alluxio_home_dir }}"
+  when: was_alluxio_master
+  run_once: true
+  become: true
+
+- name: add worker nodes in conf/workers
+  template:
+    src: workers.j2
+    dest: "{{ alluxio_home_dir }}/conf/workers"
+    owner: "{{ alluxio_user }}"
+    group: "{{ alluxio_group }}"
+  when: was_alluxio_master
+  run_once: true
+  become: true
+
+- name: copy master configurartion to slave nodes
+  shell: sudo -u "{{ alluxio_user }}" ./bin/alluxio copyDir conf
+  args:
+    chdir: "{{ alluxio_home_dir }}"
+  when: was_alluxio_master
+  run_once: true
+  become: true

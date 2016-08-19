@@ -1,0 +1,22 @@
+---
+spark_archive_url: http://d3kbcqa49mib13.cloudfront.net/spark-2.0.0-bin-hadoop2.7.tgz
+spark_install_root_dir: /opt
+spark_home_dir: /opt/spark
+spark_user: spark
+spark_group: spark
+spark_cluster_mode: standalone
+
+# Spark role support actions
+spark_install: false
+spark_start: false
+spark_stop: false
+spark_restart: false
+
+# Alluxio spark client
+spark_alluxio_install: false
+spark_alluxio_clientjar_url: http://downloads.alluxio.org/downloads/files/1.2.0/alluxio-core-client-spark-1.2.0-jar-with-dependencies.jar
+
+# Deprecated ones waiting for removal
+spark_cluster_install: "{{ spark_install }}"
+spark_cluster_start: "{{ spark_start }}"
+spark_cluster_stop: "{{ spark_stop }}"

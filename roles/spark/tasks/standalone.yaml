@@ -1,0 +1,111 @@
+---
+- name: check spark-master group exists in inventory hosts
+  local_action: fail msg='To deploy standalone mode spark-master group must be specified and has only one'
+  when: not groups['spark-master']|length == 1
+  run_once: true
+
+- name: check spark-workers group exists
+  local_action: fail msg='To deploy standalone mode spark-workers group must be specified'
+  when: groups['spark-workers']|length == 0
+  run_once: true
+
+- name: check spark-master credential directory
+  stat: path="/home/{{ spark_user }}/.ssh/id_rsa"
+  register: sparksshdir
+  become: true
+
+- name: create spark-master credential directory
+  file: path="/home/{{ spark_user }}/.ssh" state=directory owner="{{ spark_user }}" group="{{ spark_group }}" mode=755
+  when: not sparksshdir.stat.exists
+  become: true
+
+- name: generate key files on master node
+  command: ssh-keygen -N '' -C "{{spark_user}}@{{spark_group}}" -f /home/{{spark_user}}/.ssh/id_rsa
+  args:
+    creates: "/home/{{ spark_user }}/.ssh/id_rsa.pub"
+  when: was_spark_master
+  become: true
+
+- name: change key file permission
+  file: path="/home/{{ spark_user }}/.ssh/{{ item }}" owner="{{ spark_user }}" group="{{ spark_group }}"  
+  when: was_spark_master
+  become: true
+  with_items:
+    - id_rsa
+    - id_rsa.pub
+
+- name: retrieve spark-master generated public key
+  set_fact: sparkpublickey="{{ lookup('file', '/home/{{ spark_user }}/.ssh/id_rsa.pub') }}"
+  delegate_to: "{{ spark_standalone_master }}"
+  run_once: true
+  become: true
+
+- name: distribute authorized keys to worker nodes.
+  authorized_key:
+    user: "{{ spark_user }}"
+    key: "{{ sparkpublickey }}"
+  when: was_spark_slave
+  become: true
+
+- name: copy conf/spark-env.sh.template to conf/spark-env.sh
+  copy:
+    src: "{{ spark_home_dir }}/conf/spark-env.sh.template"
+    dest: "{{ spark_home_dir }}/conf/spark-env.sh"
+    owner: "{{ spark_user }}"
+    group: "{{ spark_group }}"
+    remote_src: yes
+  when: was_spark_master
+  become: true
+
+- include: configuration.yaml
+  tags:
+    - spark-configure-settings
+
+- name: configure conf/slave in master node
+  template:
+    src: slaves.template.j2
+    dest: "{{ spark_home_dir }}/conf/slaves"
+    owner: "{{ spark_user }}"
+    group: "{{ spark_group }}"
+  when: was_spark_master
+  become: true
+
+- name: start spark master service
+  shell: sudo -u "{{ spark_user }}" "{{ spark_home_dir }}/sbin/start-master.sh"
+  when: spark_cluster_start
+  delegate_to: "{{ spark_standalone_master }}"
+  run_once: true
+  become: true
+  tags:
+    - spark-start-cluster
+    - spark-start-master
+
+- name: start spark worker services
+  shell: sudo -u "{{ spark_user }}" "{{ spark_home_dir }}/sbin/start-slaves.sh"
+  when: spark_cluster_start
+  delegate_to: "{{ spark_standalone_master }}"
+  run_once: true
+  become: true
+  tags:
+    - spark-start-cluster
+    - spark-start-workers
+
+- name: stop spark worker services
+  shell: sudo -u "{{ spark_user }}" "{{ spark_home_dir }}/sbin/stop-slaves.sh"
+  when: spark_cluster_stop
+  delegate_to: "{{ spark_standalone_master }}"
+  run_once: true
+  become: true
+  tags:
+    - spark-stop-cluster
+    - spark-stop-workers
+
+- name: stop spark master service
+  shell: sudo -u "{{ spark_user }}" "{{ spark_home_dir }}/sbin/stop-master.sh"
+  when: spark_cluster_stop
+  delegate_to: "{{ spark_standalone_master }}"
+  run_once: true
+  become: true
+  tags:
+    - spark-stop-cluster
+    - spark-stop-master
