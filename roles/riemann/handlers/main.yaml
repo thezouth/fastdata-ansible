@@ -1,0 +1,5 @@
+---
+- name: remove riemann deb on remote
+  file:
+    path: "{{ ansible_env.HOME }}/{{ riemann_deb_file }}"
+    state: absent

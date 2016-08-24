@@ -9,11 +9,12 @@
 - name: copy {{ riemann_deb_path }} to remote
   copy:
     src: "{{ riemann_deb_path }}"
-    dest: "{{ riemann_deb_path }}"
+    dest: "{{ ansible_env.HOME }}/{{ riemann_deb_file }}"
+  notify: remove riemann deb on remote
 
 - name: install riemann
   apt:
-    deb: "{{ riemann_deb_path }}"
+    deb: "{{ riemann_deb_file }}"
   become: true
 
 - name: install ruby
