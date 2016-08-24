@@ -1,0 +1,5 @@
+---
+- name: start riemann dashboard
+  shell: "start-stop-daemon --stop --pidfile /var/run/riemann-dash.pid"
+  become: true
+

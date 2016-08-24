@@ -5,3 +5,9 @@
     state: started
   become: true
 
+- name: start riemann health
+  shell: "start-stop-daemon --start --background --chdir /etc/riemann --exec $(which riemann-health) --pidfile /var/run/riemann-health.pid --make-pidfile -- -h {{ riemann_host }} -p {{ riemann_port }}"
+  vars:
+    riemann_host: 127.0.0.1
+    riemann_port: 5555
+  become: true

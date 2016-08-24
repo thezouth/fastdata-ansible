@@ -9,3 +9,6 @@ riemann_install: false
 riemann_start: false
 riemann_stop: false
 riemann_uninstall: false
+
+riemann_dash_start: false
+riemann_dash_stop: false

@@ -16,3 +16,50 @@
     deb: "{{ riemann_deb_path }}"
   become: true
 
+- name: install ruby
+  apt:
+    name: ruby2.0
+    cache_valid_time: 3600
+    update_cache: true
+  become: true
+
+- name: change sybolic link from ruby1.9.1 to ruby2.0
+  file:
+    src: /usr/bin/ruby2.0
+    dest: /usr/bin/ruby
+    state: link
+    force: true
+  become: true
+
+- name: change sybolic link from gem.9.1 to gem2.0
+  file:
+    src: /usr/bin/gem2.0
+    dest: /usr/bin/gem
+    state: link
+    force: true
+  become: true
+
+- name: install riemann tools
+  gem:
+    name: "{{ item }}"
+    user_install: false
+  with_items:
+    - riemann-tools
+    - riemann-dash
+    - riemann-client
+  become: true
+
+- name: config riemann
+  template:
+    src: riemann.config.j2
+    dest: /etc/riemann/riemann.config
+  become: true
+
+- name: config riemann-dash
+  template:
+    src: config.rb.j2
+    dest: /etc/riemann/config.rb
+    owner: riemann
+    group: riemann
+  become: true
+
