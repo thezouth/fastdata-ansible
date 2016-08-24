@@ -11,3 +11,9 @@
 - include: uninstall.yaml
   when: riemann_uninstall
 
+- include: dash_start.yaml
+  when: riemann_dash_start
+
+- include: dash_stop.yaml
+  when: riemann_dash_stop
+

@@ -5,3 +5,14 @@
     state: absent
   become: true
 
+- name: install riemann tools
+  gem:
+    name: "{{ item }}"
+    user_install: false
+    state: absent
+  with_items:
+    - riemann-tools
+    - riemann-dash
+    - riemann-client
+  become: true
+    

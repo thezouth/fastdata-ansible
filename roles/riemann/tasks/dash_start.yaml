@@ -1,0 +1,5 @@
+---
+- name: start riemann dashboard
+  shell: "start-stop-daemon --start --background --chdir /etc/riemann --exec $(which riemann-dash) --pidfile /var/run/riemann-dash.pid --make-pidfile"
+  become: true
+
