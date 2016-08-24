@@ -34,10 +34,15 @@
     - id_rsa
     - id_rsa.pub
 
-- name: retrieve spark-master generated public key
-  set_fact: sparkpublickey="{{ lookup('file', '/home/{{ spark_user }}/.ssh/id_rsa.pub') }}"
+- name: read spark-master public key on master
+  shell: sudo -u "{{ spark_user }}" cat /home/{{ spark_user }}/.ssh/id_rsa.pub
   delegate_to: "{{ spark_standalone_master }}"
   run_once: true
+  register: readsparkpubkey
+  become: true
+
+- name: set spark-master public key fact
+  set_fact: sparkpublickey="{{ readsparkpubkey.stdout }}"
   become: true
 
 - name: distribute authorized keys to worker nodes.
