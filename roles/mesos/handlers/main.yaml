@@ -1,0 +1,4 @@
+---
+- name: uninstall equivs
+  apt: name=equivs state=absent
+  become: true
