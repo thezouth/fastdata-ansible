@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+    - blockinfile:
+        dest: /etc/hosts
+        block: "{{ hostvars[item].ansible_host }}    {{ item }}"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item }}"
+      with_items: "{{ groups['all'] }}" 
+      become: true
