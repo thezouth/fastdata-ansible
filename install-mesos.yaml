@@ -1,0 +1,6 @@
+---
+- hosts: all
+  vars:
+    archive_storage_path: ./archives
+  roles:
+    - mesos

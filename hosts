@@ -1,0 +1,7 @@
+[mesos-master]
+master01 ansible_host=10.0.0.5
+master02 ansible_host=10.0.0.6
+master03 ansible_host=10.0.0.8
+
+[mesos-agent]
+agent01 ansible_host=10.0.0.7
