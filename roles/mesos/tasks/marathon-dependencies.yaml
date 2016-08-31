@@ -1,0 +1,33 @@
+---
+- name: install equivs
+  apt: name=equivs
+  notify: uninstall equivs
+  become: true
+
+- name: check existing java installation
+  shell: ls -1t {{ java_install_dir }} | head -1
+  register: javainstall
+
+- name: check newest installed java version
+  set_fact: java_version="{{ javainstall.stdout | regex_replace('jdk\\d\.(\\d).+', '\\1') }}"
+
+- name: check newest installed java update
+  set_fact: java_update="{{ javainstall.stdout | regex_replace('[^_]+_(\\d+)', '\\1') }}"
+
+- name: set dummy build file name
+  set_fact: dummy_build_file="dummy-java-{{ java_version }}u{{ java_update }}"
+
+- name: template dummy package equivs file
+  template: src="dummy-package-equivs.j2" dest="./{{ dummy_build_file }}"
+  notify: clean dummy build file
+
+- name: set dummy package file name
+  set_fact: dummy_package_file="dummy-oracle-jdk_1.{{ java_version }}.{{ java_update }}_all.deb"
+
+- name: build dummy package
+  shell: equivs-build {{ dummy_build_file }}
+  notify: clean dummy package file
+
+- name: install dummy package
+  apt: deb={{ dummy_package_file }}
+  become: true

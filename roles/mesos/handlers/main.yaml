@@ -2,3 +2,9 @@
 - name: uninstall equivs
   apt: name=equivs state=absent
   become: true
+
+- name: clean dummy build file
+  file: path="./{{ dummy_build_file }}" state="absent"
+
+- name: clean dummy package file
+  file: path="./{{ dummy_package_file }}" state="absent"

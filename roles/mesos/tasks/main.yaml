@@ -9,53 +9,21 @@
   set_fact: distribution="{{ ansible_distribution | lower }}"
   
 - name: check linux codename
-  set_fact: codename="{{ ansible_distribution_releaase | lower }}"
+  set_fact: codename="{{ ansible_distribution_release | lower }}"
 
 - name: add mesosphere repository
   apt_repository: 
-    repo: "deb http://repos.mesosphere.com/{{ distribution }} {{ codename }} main
+    repo: "deb http://repos.mesosphere.com/{{ distribution }} {{ codename }} main"
     filename: mesosphere.list
   become: true
 
-- name: update apt-get cache
-  apt: update_cache=yes
-  become: true
-
 - name: install mesos
-  apt: name=mesos
+  apt: name=mesos update_cache=yes
   become: true
 
-- block:
-    - name: install equivs
-      apt: name=equivs
-      notify: uninstall equivs
-      become: true
+- block: # install marathon and its dependencies
 
-    - name: check existing java installation
-      shell: ls -1t {{ java_install_dir }} | head -1
-      register: javaversion
-
-    - name: check newest installed java version
-      set_fact: java_version="{{ javaversion.stdout | regex_replace('jdk\\d\.(\\d).+', '\\1') }}"
-
-    - name: check newest installed java update
-      set_fact: java_update="{{ javavesion.stdout | regex_replace('[^_]+\\d+', '\\1') }}"
-
-    - name: set dummy build file name
-      set_fact: dummy_build_file="dummy-java-{{ java_version }}u{{ java_update }}"
-
-    - name: put dummy package equivs file
-      template: src="dummy-package-equivs.j2" dest="{{ dummy_build_file }}"
-
-    - name: set dummy package file name
-      set_fact: dummy_package_file="dummy-oracle-jdk-1.{{ java_version }}.{{ java_update }}_all.deb"
-
-    - name: build dummy package
-      shell: equivs-build {{ dummy_build_file }}
-      
-    - name: install dummy package
-      apt: deb={{ dummy_package_file }}
-      become: true
+    - include: marathon-dependencies.yaml
 
     - name: install marathon
       apt: name=marathon
