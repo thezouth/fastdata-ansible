@@ -1,0 +1,23 @@
+---
+- name: stop zookeeper service on agent
+  service: name=zookeeper state=stopped
+
+- name: disable zookeeper service on agent
+  shell: echo "manual" > {{ mesos_zk_override_path }}
+
+# should be moved to zookeeper.yaml
+- name: configure meos-agent zookeeper
+  template:
+    src: "mesos-zk.j2"
+    dest: "{{ mesos_zk_path }}"
+  when: was_mesos_agent
+
+- name: stop mesos-master service
+  service: name=mesos-master state=stopped
+
+- name: disable mesos-master on agent
+  shell: echo "manual" > {{ mesos_master_override_path }}
+
+- name: restart mesos-agent service
+  service: name=mesos-slave state=restarted
+

@@ -1,2 +1,20 @@
 ---
 java_install_dir: /opt/java
+
+mesos_zk_path: /etc/mesos/zk
+
+mesos_master_config_path: /etc/mesos-master
+mesos_master_override_path: /etc/init/mesos-master.override
+
+mesos_master_quorum: "{{ (groups['mesos-master']|length /2)|round|int }}"
+mesos_master_quorum_path: "{{ mesos_master_config_path }}/quorum"
+
+mesos_agent_config_path: /etc/mesos-slave
+mesos_agent_override_path: /etc/init/mesos-slave.override
+
+mesos_zk_myid_path: /etc/zookeeper/conf/myid
+mesos_zk_config_path: /etc/zookeeper/conf/zoo.cfg
+mesos_zk_override_path: /etc/init/zookeeper.override
+
+mesos_install: false
+mesos_install_marathon: true

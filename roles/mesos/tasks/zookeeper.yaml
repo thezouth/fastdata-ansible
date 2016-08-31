@@ -1,0 +1,32 @@
+---
+- name: set zk_id variable
+  set_fact: zk_id="{{ zk_id | default(groups['mesos-master'].index(inventory_hostname)) + 1 }}"
+  when: was_mesos_master
+  tags:
+    - configure-zookeeper
+
+- name: configure zookeeper myid
+  shell: echo "{{ zk_id }}" > {{ mesos_zk_myid_path }}
+  when: was_mesos_master
+  become: true
+  tags:
+    - configure-zookeeper
+    - configure-zookeeper-myid
+
+- name: configure zookeeper servers
+  blockinfile:
+    dest: "{{ mesos_zk_config_path }}"
+    block: "{{ lookup('template', 'zookeeper-myid.j2', convert_data=False) }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK #"
+  when: was_mesos_master
+  become: true
+  tags:
+    - configure-zookeeper
+    - configure-zookeeper-servers
+
+- name: start zookeeper service
+  service: name=zookeeper state=restarted
+  when: was_mesos_master
+  become: true
+  tags:
+    - start-zookeeper

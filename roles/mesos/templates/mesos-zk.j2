@@ -1,0 +1,7 @@
+zk://{{ hostvars[groups['mesos-master'][0]].ansible_default_ipv4.address }}:2181
+{%- if groups['mesos-master']|length > 1 -%}
+    {%- for zk_host in groups['mesos-master'][1:] -%}
+        ,{{ hostvars[zk_host].ansible_default_ipv4.address }}:2181
+    {%- endfor -%}
+{%- endif -%}
+/mesos

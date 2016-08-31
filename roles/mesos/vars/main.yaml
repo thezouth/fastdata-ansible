@@ -1,0 +1,4 @@
+---
+# zk_id: "{{ groups['mesos-master'].index(inventory_hostname) + 1 }}"
+was_mesos_master: "{{ inventory_hostname in groups['mesos-master'] }}"
+was_mesos_agent: "{{ inventory_hostname in groups['mesos-agent'] }}"

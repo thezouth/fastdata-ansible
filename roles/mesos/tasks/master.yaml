@@ -1,0 +1,24 @@
+---
+# should be moved to zookeeper.yaml
+- name: configure mesos-master zookeeper
+  template:
+    src: "mesos-zk.j2"
+    dest: "{{ mesos_zk_path }}"
+  tags:
+    - configure-master-zk
+
+- name: configure mesos-master quorum
+  shell: echo "{{ mesos_master_quorum }}" > {{ mesos_master_quorum_path }}
+  
+- name: stop mesos-agent on master
+  service: name=mesos-slave state=stopped
+
+- name: disable mesos-agent on master
+  shell: echo "manual" > {{ mesos_agent_override_path }}
+
+- name: restart mesos-master service
+  service: name=mesos-master state=restarted
+
+- name: restart marathon service
+  service: name=marathon state=restarted
+  when: mesos_install_marathon

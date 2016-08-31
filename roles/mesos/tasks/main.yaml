@@ -28,3 +28,16 @@
     - name: install marathon
       apt: name=marathon
       become: true
+
+  when: mesos_install_marathon
+
+- include: zookeeper.yaml
+
+- include: master.yaml
+  when: was_mesos_master
+  become: true
+
+- include: agent.yaml
+  when: was_mesos_agent
+  become: true
+
