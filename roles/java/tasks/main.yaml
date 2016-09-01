@@ -38,7 +38,7 @@
   become: true
 
 - name: update alternatives
-  shell: update-alternatives --install /usr/bin/{{ item }} {{ item }} {{ java_home_dir }}/bin/{{ item }} 100
+  shell: update-alternatives --install /usr/bin/{{ item }} {{ item }} {{ java_home_dir }}/bin/{{ item }} {{ java_update_alternatives_priority }}
   with_items: "{{ java_update_alternatives_items }}"
   when: installjavasdk.changed
   become: true
