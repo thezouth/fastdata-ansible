@@ -1,6 +1,16 @@
 ---
 - hosts: all
   tasks:
+    - authorized_key:
+        user: vagrant
+        key: "{{ lookup('file', '/vagrant_data/id_rsa.pub') }}"
+
+    - lineinfile:
+        dest: /etc/hosts
+        regexp: '.*127\.0\.0\.1.*{{ inventory_hostname }}'
+        state: absent
+      become: true
+      
     - blockinfile:
         dest: /etc/hosts
         block: "{{ hostvars[item].ansible_host }}    {{ item }}"
