@@ -8,3 +8,6 @@
 
 - name: clean dummy package file
   file: path="./{{ dummy_package_file }}" state="absent"
+
+- name: remove copied mesos deb files
+  file: path="/tmp/mesos" state="absent"

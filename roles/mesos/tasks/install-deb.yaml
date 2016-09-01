@@ -1,0 +1,34 @@
+---
+
+- shell: apt-get install --reinstall --print-uris -qq mesos | cut -d"'" -f2 | grep '/mesos'
+  register: checkmesosdeb
+
+- set_fact: mesos_deb_pkg="{{ checkmesosdeb.stdout | basename }}"
+- set_fact: mesos_deb_root="{{ archive_storage_path }}/mesos"
+- set_fact: mesos_deb_path="{{ mesos_deb_root }}/{{ mesos_deb_pkg }}"
+
+- name: download mesos package and dependencies
+  local_action: shell wget -P {{ mesos_deb_root | quote }} $(apt-get install --reinstall --print-uris -qq mesos | cut -d"'" -f2) 
+  args:
+    creates: "{{ mesos_deb_path }}"
+
+- local_action: find
+  args:
+    paths: "{{ mesos_deb_root }}"
+    patterns: "*.deb"
+  register: mesosdebdependencies
+
+- file: path="/tmp/mesos" state=directory
+  
+- name: copy mesos deb and dependencies
+  copy:
+    src: "{{ item.path }}"
+    dest: "/tmp/mesos/{{ item.path | basename }}"
+  with_items: "{{ mesosdebdependencies.files }}"
+
+- name: install mesos deb
+  shell: dpkg -i *.deb
+  args:
+    chdir: "/tmp/mesos"
+  notify: remove copied mesos deb files
+  become: true

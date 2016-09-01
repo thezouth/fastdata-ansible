@@ -1,0 +1,6 @@
+---
+- name: set mesos_ip fact
+  set_fact: mesos_ip="{{ mesos_ip | default(ansible_host) }}"
+
+- name: set mesos_hostname fact
+  set_fact: mesos_hostname="{{ mesos_hostname | default(inventory_hostname) }}"

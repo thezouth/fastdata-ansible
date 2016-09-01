@@ -1,0 +1,5 @@
+---
+- shell: dpkg -l | grep '^i' | grep mesos | wc -l 
+  register: debpkginstalled
+
+- set_fact: was_mesos_installed="{{ debpkginstalled.stdout | int > 0 }}"

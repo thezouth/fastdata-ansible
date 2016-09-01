@@ -1,35 +1,6 @@
 ---
-- name: add mesosphere keyserver
-  apt_key:
-    keyserver: hkp://keyserver.ubuntu.com:80
-    id: E56151BF
-  become: true
-
-- name: check linux distribution
-  set_fact: distribution="{{ ansible_distribution | lower }}"
-  
-- name: check linux codename
-  set_fact: codename="{{ ansible_distribution_release | lower }}"
-
-- name: add mesosphere repository
-  apt_repository: 
-    repo: "deb http://repos.mesosphere.com/{{ distribution }} {{ codename }} main"
-    filename: mesosphere.list
-  become: true
-
-- name: install mesos
-  apt: name=mesos update_cache=yes
-  become: true
-
-- block: # install marathon and its dependencies
-
-    - include: marathon-dependencies.yaml
-
-    - name: install marathon
-      apt: name=marathon
-      become: true
-
-  when: mesos_install_marathon
+- include: install.yaml
+  when: mesos_install
 
 - include: zookeeper.yaml
 

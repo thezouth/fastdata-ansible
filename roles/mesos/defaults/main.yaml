@@ -1,6 +1,11 @@
 ---
+archive_storage_path: "{{ archive_storage_path | default('./') }}"
 java_install_dir: /opt/java
 
+mesos_archive_url: "http://repos.mesosphere.com/ubuntu/pool/main/m/mesos/mesos_1.0.0-2.0.89.ubuntu1404_amd64.deb"
+mesos_archive_sha: "4d80d7d940367a380a7b5b74cbc27df1227c9832feb3c2ee2ec7a5ab14bf21a0"
+mesos_archive_name: "{{ mesos_archive_url | basename }}"
+mesos_archive_path: "{{ storage_archive_path }}/{{ mesos_archive_name }}"
 mesos_zk_path: /etc/mesos/zk
 
 mesos_master_config_path: /etc/mesos-master
@@ -17,4 +22,7 @@ mesos_zk_config_path: /etc/zookeeper/conf/zoo.cfg
 mesos_zk_override_path: /etc/init/zookeeper.override
 
 mesos_install: false
+mesos_install_from_repository: false
+mesos_install_from_deb: true
+
 mesos_install_marathon: true
