@@ -1,0 +1,6 @@
+---
+- include: marathon-dummy-deps.yaml
+
+- name: install marathon
+  apt: name=marathon
+  become: true

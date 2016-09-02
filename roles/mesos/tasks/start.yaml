@@ -1,0 +1,12 @@
+---
+- name: start mesos-master service
+  service: name=mesos-master state=started
+  when: was_mesos_master
+
+- name: start mesos-agent service
+  service: name=mesos-slave state=started
+  when: was_mesos_agent
+  
+- name: start marathon service
+  service: name=marathon state=started
+  when: mesos_install_marathon

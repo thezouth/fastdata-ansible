@@ -1,6 +1,6 @@
 ---
 
-- shell: apt-get install --reinstall --print-uris -qq mesos | cut -d"'" -f2 | grep '/mesos'
+- local_action: shell apt-get install --reinstall --print-uris -qq mesos | cut -d"'" -f2 | grep '/mesos'
   register: checkmesosdeb
 
 - set_fact: mesos_deb_pkg="{{ checkmesosdeb.stdout | basename }}"

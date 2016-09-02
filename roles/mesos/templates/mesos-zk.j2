@@ -1,7 +1,14 @@
-zk://{{ hostvars[groups['mesos-master'][0]].mesos_ip }}:2181
-{%- if groups['mesos-master']|length > 1 -%}
-    {%- for zk_host in groups['mesos-master'][1:] -%}
-        ,{{ hostvars[zk_host].mesos_ip }}:2181
-    {%- endfor -%}
+{%- if mesos_zk -%}
+    {%- if not mesos_zk.lstrip().startswith('zk://') -%}
+    zk://
+    {%- endif -%}
+    {{ mesos_zk }}
+{%- else -%}
+    zk://{{ hostvars[groups['mesos-master'][0]].mesos_ip }}:2181
+    {%- if groups['mesos-master']|length > 1 -%}
+        {%- for zk_host in groups['mesos-master'][1:] -%}
+            ,{{ hostvars[zk_host].mesos_ip }}:2181
+        {%- endfor -%}
+    {%- endif -%}
 {%- endif -%}
 /mesos

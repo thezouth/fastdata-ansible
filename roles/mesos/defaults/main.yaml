@@ -25,4 +25,7 @@ mesos_install: false
 mesos_install_from_repository: false
 mesos_install_from_deb: true
 
+mesos_start: false
+mesos_stop: false
+
 mesos_install_marathon: true

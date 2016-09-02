@@ -2,13 +2,11 @@
 - include: install.yaml
   when: mesos_install
 
-- include: zookeeper.yaml
+- include: configure.yaml
+  when: mesos_install or mesos_configure
 
-- include: master.yaml
-  when: was_mesos_master
-  become: true
+- include: start.yaml
+  when: mesos_start
 
-- include: agent.yaml
-  when: was_mesos_agent
-  become: true
-
+- include: stop.yaml
+  when: mesos_stop

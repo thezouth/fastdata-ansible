@@ -1,0 +1,10 @@
+---
+- name: add mesosphere repository (remote)
+  include: add-remote-repo.yaml
+  when: mesos_install_from_repository
+
+- name: add mesosphere repository (local)
+  include: add-local-repo.yaml
+  delegate_to: localhost
+  run_once: true
+  when: mesos_install_from_deb

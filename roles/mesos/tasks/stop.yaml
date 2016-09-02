@@ -1,0 +1,12 @@
+---
+- name: stop mesos-master service
+  service: name=mesos-master state=stopped
+  when: was_mesos_master
+
+- name: stop mesos-agent service
+  service: name=mesos-slave state=stopped
+  when: was_mesos_agent
+
+- name: stop marathon service
+  service: name=marathon state=stopped
+  when: was_mesos_master

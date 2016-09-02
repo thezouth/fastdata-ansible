@@ -1,6 +1,8 @@
 ---
 - hosts: all
   vars:
-    archive_storage_path: ./archives
+    mesos_install: true
+    archive_storage_path: archives
+    java_update_alternatives_priority: 1234
   roles:
     - mesos
