@@ -4,7 +4,7 @@
 
 - name: add mesosphere repository
   include: install-add-repo.yaml
-  when: not was_mesos_installed and mesos_install
+  when: mesos_install
   become: true
 
 - name: set additional mesos facts
