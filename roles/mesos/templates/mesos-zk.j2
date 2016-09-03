@@ -1,4 +1,4 @@
-{%- if mesos_zk -%}
+{%- if mesos_zk is defined -%}
     {%- if not mesos_zk.lstrip().startswith('zk://') -%}
     zk://
     {%- endif -%}
