@@ -1,0 +1,55 @@
+---
+- name: create {{ mesos_mesos_dns_install_dir }} path
+  file:
+    path: "{{ mesos_mesos_dns_install_dir }}"
+    state: directory
+  become: true
+
+- name: download mesos-dns executable
+  get_url:
+    url: "{{ mesos_mesos_dns_bin_url }}"
+    dest: "{{ mesos_mesos_dns_src_bin }}"
+    validate_certs: no
+  become: true
+
+- name: change mesos-dns permission
+  file:
+    path: "{{ mesos_mesos_dns_src_bin }}"
+    mode: "a+x"
+  become: true
+
+- name: add symbolic link to mesos-dns executable
+  file:
+    src: "{{ mesos_mesos_dns_src_bin }}"
+    dest: "{{ mesos_mesos_dns_dest_bin }}"
+    state: link
+  become: true
+
+- set_fact: mesos_zk="{{ lookup('template', 'mesos-zk.j2', convert_data=False) }}"
+
+- name: create config.json in {{ mesos_mesos_dns_install_dir }}
+  template:
+    src: mesos-dns-config.json.j2
+    dest: "{{ mesos_mesos_dns_config_path }}"
+  become: true
+
+- name: check mesos-dns marathon unexists
+  local_action: uri
+  args:
+    url: "{{ mesos_marathon_api_url }}/{{ mesos_mesos_dns_marathon_app }}"
+    method: GET
+    status_code: 404
+  register: mesosdnsmarathon
+  ignore_errors: true
+  run_once: true
+
+- name: deploy mesos-dns in marathon 
+  local_action: uri
+  args:
+    url: "{{ mesos_marathon_api_url }}"
+    method: POST
+    body_format: json
+    body: "{{ lookup('template', 'mesos-dns-marathon.json.j2') }}"
+    status_code: "201,200"
+  when: mesosdnsmarathon.status == 404
+  run_once: true

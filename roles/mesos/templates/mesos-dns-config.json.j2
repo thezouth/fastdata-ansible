@@ -1,0 +1,14 @@
+{
+  "zk": "{{ mesos_zk }}"
+  ,"refreshSeconds": 60
+  ,"ttl": 60
+  ,"domain": "mesos"
+  ,"port": 53
+  {% if mesos_mesos_dns_resolvers is defined -%}
+  ,"resolvers": [ "{{ mesos_mesos_dns_resolver }}" ],
+  {%- endif %}
+  ,"timeout": 5
+  {% if mesos_mesos_dns_email is defined -%}
+  ,"email": "{{ mesos_mesos_dns_email }}"
+  {%- endif %}
+}
