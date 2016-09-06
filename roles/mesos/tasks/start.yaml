@@ -9,4 +9,4 @@
   
 - name: start marathon service
   service: name=marathon state=started
-  when: mesos_install_marathon
+  when: was_mesos_master

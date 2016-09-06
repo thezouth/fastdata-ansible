@@ -16,6 +16,12 @@
 
 - include: start.yaml
   when: mesos_start
+  become: true
+  tags:
+    - start-mesos-service
 
 - include: stop.yaml
   when: mesos_stop
+  become: true
+  tags:
+    - stop-mesos-service
