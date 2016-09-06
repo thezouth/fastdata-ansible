@@ -8,6 +8,9 @@
 - include: mesos-dns.yaml
   when: was_mesos_agent and mesos_install_mesos_dns
 
+- include: docker.yaml
+  when: was_mesos_agent and mesos_install_docker
+
 - include: configure.yaml
   when: mesos_install or mesos_configure
 
