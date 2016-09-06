@@ -1,0 +1,38 @@
+---
+- name: get all deb dependencies for {{ pkg_name }}
+  local_action: shell apt-get install --reinstall --print-uris -qq {{ pkg_name }} | cut -d"'" -f2 | grep '/{{ pkg_name }}'
+  register: checkpkgdeb
+
+- name: set pkg_deb_name fact variable
+  set_fact: pkg_deb_name="{{ checkpkgdeb.stdout | basename }}"
+
+- name: set pkg_deb_root fact variable
+  set_fact: pkg_deb_root="{{ archive_storage_path }}/{{ pkg_name }}"
+
+- name: set pkg_deb_path fact variable
+  set_fact: pkg_deb_path="{{ pkg_deb_root }}/{{ pkg_deb_name }}"
+
+- name: download {{ pkg_name }} package and dependencies
+  local_action: shell wget -P {{ pkg_deb_root | quote }} $(apt-get install --reinstall --print-uris -qq {{ pkg_name }} | cut -d"'" -f2) 
+  args:
+    creates: "{{ pkg_deb_path }}"
+
+- name: get list of files in deb dependencies
+  local_action: find paths="{{ pkg_deb_root }}" patterns="*.deb"
+  register: pkgdebdependencies
+
+- name: set pkg_dest_temp_path fact variable
+  set_fact: pkg_dest_temp_path="/tmp/{{ pkg_name }}"
+
+- name: create remote temporary destination path
+  file: path="{{ pkg_dest_temp_path }}" state=directory
+  
+- name: copy {{ pkg_name }} deb and dependencies
+  copy: src="{{ item.path }}" dest="{{ pkg_dest_temp_path }}/{{ item.path | basename }}"
+  with_items: "{{ pkgdebdependencies.files }}"
+
+- name: install {{ pkg_name }} deb
+  shell: dpkg -i *.deb
+  args:
+    chdir: "{{ pkg_dest_temp_path }}"
+  become: true

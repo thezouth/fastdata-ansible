@@ -1,6 +1,13 @@
 ---
+- include: install-pkg-check.yaml pkg_name=marathon
+
 - include: marathon-dummy-deps.yaml
+  when: not was_pkg_installed
 
 - name: install marathon
   apt: name=marathon
+  when: not was_pkg_installed and mesos_install_from_repository
   become: true
+
+- include: install-pkg-deb.yaml pkg_name=marathon
+  when: not was_pkg_installed and mesos_install_from_deb

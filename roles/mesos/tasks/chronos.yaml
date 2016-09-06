@@ -1,0 +1,10 @@
+---
+- include: install-pkg-check.yaml pkg_name=chronos
+
+- name: install mesos from repository
+  apt: name=chronos
+  when: not was_pkg_installed and mesos_install_from_repository
+  become: true
+
+- include: install-pkg-deb.yaml pkg_name=chronos
+  when: not was_pkg_installed and mesos_install_from_deb

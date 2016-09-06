@@ -1,6 +1,5 @@
 ---
-- name: check mesos installation
-  include: install-check.yaml
+- include: install-pkg-check.yaml pkg_name=mesos
 
 - name: add mesosphere repository
   include: install-add-repo.yaml
@@ -10,12 +9,14 @@
 - name: set additional mesos facts
   include: install-facts.yaml
 
-# install from repository without keeping archives
-- name: install mesos
-  apt: name=mesos update_cache=yes
+- name: update apt-get repository
+  apt: update_cache=yes
+  when: not was_pkg_installed
+
+- name: install mesos from repository
+  apt: name=mesos
   when: not was_mesos_installed and mesos_install_from_repository
   become: true
 
-# install from repository but keep archives
-- include: install-deb.yaml
+- include: install-pkg-deb.yaml pkg_name=mesos
   when: not was_mesos_installed and mesos_install_from_deb

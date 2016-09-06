@@ -1,0 +1,7 @@
+---
+- hosts: all
+  roles:
+    - role: mesos
+      mesos_configure: true
+      mesos_agent_configurations:
+        executor_registration_timeout: 12mins

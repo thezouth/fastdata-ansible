@@ -7,14 +7,15 @@
   tags:
     - configure-master-zk
 
-- name: configure mesos-master quorum
-  shell: echo "{{ mesos_master_quorum }}" > {{ mesos_master_quorum_path }}
+- name: configure mesos master
+  copy: content="{{ item.value }}" dest="{{ mesos_master_config_path }}/{{ item.key }}"
+  with_dict: "{{ mesos_master_default_configurations | combine(mesos_master_configurations) }}"
   
 - name: stop mesos-agent on master
   service: name=mesos-slave state=stopped
 
 - name: disable mesos-agent on master
-  shell: echo "manual" > {{ mesos_agent_override_path }}
+  copy: content="manual" dest="{{ mesos_agent_override_path }}"
 
 - name: restart mesos-master service
   service: name=mesos-master state=restarted

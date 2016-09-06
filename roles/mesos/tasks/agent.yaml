@@ -12,11 +12,15 @@
     dest: "{{ mesos_zk_path }}"
   when: was_mesos_agent
 
+- name: configure mesos agent
+  copy: content="{{ item.value }}" dest="{{ mesos_agent_config_path }}/{{ item.key }}"
+  with_dict: "{{ mesos_agent_default_configurations | combine(mesos_agent_configurations) }}"
+
 - name: stop mesos-master service
   service: name=mesos-master state=stopped
 
 - name: disable mesos-master on agent
-  shell: echo "manual" > {{ mesos_master_override_path }}
+  copy: content="manual" dest="{{ mesos_master_override_path }}"
 
 - name: restart mesos-agent service
   service: name=mesos-slave state=restarted

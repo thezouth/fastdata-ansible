@@ -1,0 +1,6 @@
+---
+- name: check {{ pkg_name }} exists
+  shell: dpkg -l | grep '^i' | grep {{ pkg_name }} | wc -l 
+  register: debpkginstalled
+
+- set_fact: was_pkg_installed="{{ debpkginstalled.stdout | int > 0 }}"
