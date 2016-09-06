@@ -15,3 +15,8 @@
   when: spark_cluster_mode == "standalone"
   tags:
     - spark-configure-cluster
+
+- include: mesos.yaml
+  when: spark_cluster_mode == "mesos"
+  tags:
+    - spark-configure-cluster
