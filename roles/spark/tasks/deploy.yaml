@@ -12,6 +12,7 @@
     src: "{{ spark_archive_path }}"
     dest: "{{ spark_install_root_dir }}"
     owner: "{{ spark_user }}"
+    group: "{{ spark_group }}"
     creates: "{{ spark_install_dir }}/conf/spark-env.sh"
   become: true
 
