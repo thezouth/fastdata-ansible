@@ -42,6 +42,8 @@
   register: mesosdnsmarathon
   ignore_errors: true
   run_once: true
+  tags:
+    - deploy-mesos-dns
 
 - name: deploy mesos-dns in marathon 
   local_action: uri
@@ -53,3 +55,5 @@
     status_code: "201,200"
   when: mesosdnsmarathon.status == 404
   run_once: true
+  tags:
+    - deploy-mesos-dns

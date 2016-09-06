@@ -12,11 +12,12 @@
 - name: update apt-get repository
   apt: update_cache=yes
   when: not was_pkg_installed
+  become: true
 
 - name: install mesos from repository
   apt: name=mesos
-  when: not was_mesos_installed and mesos_install_from_repository
+  when: not was_pkg_installed and mesos_install_from_repository
   become: true
 
 - include: install-pkg-deb.yaml pkg_name=mesos
-  when: not was_mesos_installed and mesos_install_from_deb
+  when: not was_pkg_installed and mesos_install_from_deb
