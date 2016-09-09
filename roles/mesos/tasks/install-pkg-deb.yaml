@@ -1,6 +1,7 @@
 ---
 - name: get all deb dependencies for {{ pkg_name }}
   local_action: shell apt-get install --reinstall --print-uris -qq {{ pkg_name }} | cut -d"'" -f2 | grep '/{{ pkg_name }}'
+  run_once: true
   register: checkpkgdeb
 
 - name: set pkg_deb_name fact variable
@@ -16,6 +17,7 @@
   local_action: shell wget -P {{ pkg_deb_root | quote }} $(apt-get install --reinstall --print-uris -qq {{ pkg_name }} | cut -d"'" -f2) 
   args:
     creates: "{{ pkg_deb_path }}"
+  run_once: true
 
 - name: get list of files in deb dependencies
   local_action: find paths="{{ pkg_deb_root }}" patterns="*.deb"

@@ -5,6 +5,8 @@
   include: install-add-repo.yaml
   when: mesos_install
   become: true
+  tags:
+    - add-mesossphere-repo
 
 - name: set additional mesos facts
   include: install-facts.yaml
