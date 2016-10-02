@@ -7,7 +7,7 @@
       CLUSTER_NAME: "\"zouth-analytics\""
       QUORUM_SIZE: 2
       THERMOS_EXECUTOR_FLAGS: "\"--announcer-ensemble {{ zk_endpoints }}\""
-      HOSTNAME: "\"{{ hostvars['hostname'] }}\""
+      HOSTNAME: "\"{{ inventory_hostname }}\""
   tasks:
     - name: stop service
       service:
