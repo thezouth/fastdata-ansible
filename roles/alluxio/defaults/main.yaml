@@ -1,13 +1,18 @@
 ---
-alluxio_archive_url: http://downloads.alluxio.org/downloads/files/1.2.0/alluxio-1.2.0-bin.tar.gz
 alluxio_archive_name: "{{ alluxio_archive_url | basename }}"
-alluxio_archive_path: "{{ archive_storage_path|default('./') }}/{{ alluxio_archive_name }}"
-alluxio_install_root_dir: /opt
+alluxio_archive_path: "{{ archive_storage_path | default('./') }}/{{ alluxio_archive_name }}"
+alluxio_archive_url: http://downloads.alluxio.org/downloads/files/1.2.0/alluxio-1.2.0-bin.tar.gz
 alluxio_home_dir: /opt/alluxio
+alluxio_install_root_dir: /opt
+alluxio_underfsstorage: local
 alluxio_user: alluxio
 alluxio_group: alluxio
-alluxio_underfsstorage: local
+alluxio_workers: nil
 
+alluxio_worker_java_opts:
+  - name: alluxio.worker.hostname
+    value: "{{ ansible_eth0.ipv4.address }}"
+    
 alluxio_spark_integrate: true
 alluxio_sparkclient_url: http://downloads.alluxio.org/downloads/files/1.2.0/alluxio-core-client-spark-1.2.0-jar-with-dependencies.jar
 alluxio_spark_user: spark

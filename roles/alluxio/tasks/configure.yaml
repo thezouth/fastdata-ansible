@@ -1,4 +1,16 @@
 ---
+# Configure master nodes
+- name: configure master hostname option
+  lineinfile:
+    dest: "{{ alluxio_home_dir }}/conf/alluxio-env.sh"
+    regexp: '^ALLUXIO_MASTER_HOSTNAME='
+    insertafter: '#ALLUXIO_MASTER_HOSTNAME='
+    line: "ALLUXIO_MASTER_HOSTNAME=\"{{ alluxio_master_hostname }}\""
+    owner: "{{ alluxio_user }}"
+    group: "{{ alluxio_group }}"
+  when: alluxio_master_hostname is defined
+  become: true
+
 # Configure worker nodes
 - set_fact: worker_opts_bundled="{{ lookup('template', 'bundleprops.j2', convert_data=False) }}"
   when: was_alluxio_slave

@@ -2,6 +2,3 @@
 alluxio_master_node: "{{ groups['alluxio-master'][0] }}"
 was_alluxio_master: "{{ inventory_hostname in groups['alluxio-master'] }}"
 was_alluxio_slave: "{{ inventory_hostname in groups['alluxio-workers'] }}"
-
-alluxio_worker_java_opts:
-    - { name: "alluxio.worker.hostname", value: "{{ ansible_eth0.ipv4.address }}" }

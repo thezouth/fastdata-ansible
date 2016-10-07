@@ -5,12 +5,8 @@
 - include: configure.yaml
   when: alluxio_install or alluxio_configure
 
-- include: start.yaml
-  when: alluxio_start
-
-- include: stop.yaml
-  when: alluxio_stop
-
-# - include: integrate-spark.yaml
-#   when: alluxio_spark_integrate and not (alluxio_start or alluxio_stop)
-
+#- include: start.yaml
+#  when: alluxio_start
+#
+#- include: stop.yaml
+#  when: alluxio_stop
