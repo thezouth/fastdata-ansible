@@ -1,0 +1,27 @@
+---
+- name: Install alluxio
+  hosts: alluxio
+
+  roles:
+    - alluxio.install
+
+  tags:
+    - install
+
+- name: Configure alluxio master
+  hosts: alluxio-master
+
+  roles:
+    - alluxio.master
+
+  tags:
+    - master
+
+- name: Confiugre alluxio worker
+  hosts: alluxio-worker
+
+  roles:
+    - alluxio.worker
+
+  tags:
+    - worker
