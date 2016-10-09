@@ -14,3 +14,4 @@
   apt_repository: 
     repo: "deb http://repos.mesosphere.com/{{ distribution }} {{ codename }} main"
     filename: mesosphere.list
+    update_cache: yes

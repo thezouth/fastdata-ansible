@@ -1,6 +1,8 @@
 ---
 - include: install.yaml
   when: mesos_install
+  tags:
+    - mesos-install
 
 - include: marathon.yaml
   when: was_mesos_master and mesos_install_marathon
