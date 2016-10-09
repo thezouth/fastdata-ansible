@@ -1,0 +1,5 @@
+---
+alluxio_home_dir: /opt/alluxio
+alluxio_underfsstorage: local
+alluxio_user: alluxio
+alluxio_group: alluxio

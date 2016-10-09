@@ -1,0 +1,16 @@
+---
+- name: copy sudoers file for saftey
+  command: cp -f /etc/sudoers /etc/sudoers.tmp
+
+- name: create sudoers file backup
+  command: cp -f /etc/sudoers /etc/sudoers.bak
+
+- name: add {{ sudoer_user }} in temporary sudoer file
+  lineinfile:
+    dest: /etc/sudoers.tmp
+    insertafter: "^root"
+    line: "{{ sudoer_user }} ALL=(ALL) NOPASSWD: ALL"
+    state: present
+
+- name: replace sudoer file with the temporary one
+  shell: visudo -q -c -f /etc/sudoers.tmp && cp -f /etc/sudoers.tmp /etc/sudoers

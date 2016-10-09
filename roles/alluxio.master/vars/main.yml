@@ -1,0 +1,2 @@
+---
+alluxio_worker_config_file: "{{ alluxio_home_dir | mandatory }}/conf/workers"

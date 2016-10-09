@@ -1,0 +1,48 @@
+---
+- name: make .ssh directory
+  delegate_to: "{{ sudoer_ssh_key_master_node }}"
+  file:
+    path: "/home/{{ sudoer_user }}/.ssh"
+    state: directory
+    owner: "{{ sudoer_user }}"
+    group: "{{ sudoer_group }}"
+  with_items: "{{ sudoer_ssh_key_slave_nodes }}"
+  become: true
+
+- name: generate ssh files on master node
+  delegate_to: "{{ sudoer_ssh_key_master_node }}"
+  command: ssh-keygen -N '' -C "{{ sudoer_user }}@{{ sudoer_group }}" -f /home/{{ sudoer_user }}/.ssh/id_rsa
+  args:
+    creates: "/home/{{ sudoer_user }}/.ssh/id_rsa.pub"
+  become: true
+
+- name: change ssh files permission
+  delegate_to: "{{ sudoer_ssh_key_master_node }}"
+  file:
+    path: "/home/{{ sudoer_user }}/.ssh/{{ item.file }}"
+    owner: "{{ sudoer_user }}"
+    group: "{{ sudoer_group }}"
+    mode: "{{ item.mode }}"
+  become: true
+  with_items:
+    
+    - file: id_rsa
+      mode: 600
+      
+    - file: id_rsa.pub
+      mode: 644
+
+- name: read ssh public key data
+  delegate_to: "{{ sudoer_ssh_key_master_node }}"
+  shell: sudo -u "{{ sudoer_user }}" cat /home/{{ sudoer_user }}/.ssh/id_rsa.pub
+  register: pubkey
+  become: true
+  
+- name: publish from master to slaves
+  delegate_to: "{{ sudoer_ssh_key_master_node }}"
+  authorized_key:
+    user: "{{ sudoer_user }}"
+    key: "{{ pubkey.stdout }}"
+  with_items:
+    - "{{ sudoer_ssh_key_slave_nodes }}"
+  become: true

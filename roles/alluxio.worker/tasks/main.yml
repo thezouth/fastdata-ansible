@@ -1,0 +1,11 @@
+---
+- name: configure worker java options
+  lineinfile:
+    dest: "{{ alluxio_home_dir }}/conf/alluxio-env.sh"
+    regexp: "^ALLUXIO_WORKER_JAVA_OPTS="
+    insertafter: "^#ALLUXIO_WORKER_JAVA_OPTS="
+    line: "ALLUXIO_WORKER_JAVA_OPTS=\"{{ alluxio_worker_java_opts }}\""
+    owner: "{{ alluxio_user }}"
+    group: "{{ alluxio_group }}"
+  when: alluxio_worker_java_opts is defined
+  become: true

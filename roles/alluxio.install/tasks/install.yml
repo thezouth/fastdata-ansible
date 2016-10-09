@@ -1,0 +1,36 @@
+---
+- name: download alluxio archive
+  local_action: get_url
+  args:
+    url: "{{ alluxio_archive_url }}"
+    dest: "{{ alluxio_archive_path }}"
+  run_once: true
+
+- local_action: shell tar ztf {{ alluxio_archive_path }} | head -1 | xargs basename
+  register: alluxioarchiveroot
+  run_once: true
+
+- set_fact: alluxio_install_dir="{{ alluxio_install_root_dir }}/{{ alluxioarchiveroot.stdout }}"
+  run_once: true
+
+- name: unarchive alluxio to {{ alluxio_install_dir }}
+  unarchive:
+    src: "{{ alluxio_archive_path }}"
+    dest: "{{ alluxio_install_root_dir }}"
+    owner: "{{ alluxio_user }}"
+    group: "{{ alluxio_group }}"
+    creates: "{{ alluxio_install_dir }}/bin/alluxio"
+
+- name: make symbol link to alluxio install directoiry
+  file:
+    src: "./{{ alluxioarchiveroot.stdout }}"
+    dest: "{{ alluxio_home_dir }}"
+    force: yes
+    owner: "{{ alluxio_user }}"
+    group: "{{ alluxio_group }}"
+    state: link
+
+- name: set ALLUXIO_HOME environment variable on startup
+  template:
+    src: alluxio-home-env.j2
+    dest: /etc/profile.d/Z99-alluxio-home.sh

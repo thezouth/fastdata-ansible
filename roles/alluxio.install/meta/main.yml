@@ -1,0 +1,12 @@
+---
+dependencies:
+
+  - role: java
+      
+  - role: alluxio.common
+
+  - role: common.sudoer
+    sudoer_user: "{{ alluxio_user }}"
+    sudoer_group: "{{ alluxio_group }}"
+    sudoer_ssh_key_master_node: "{{ alluxio_master_node }}"
+    sudoer_ssh_key_slave_nodes: "{{ alluxio_worker_nodes }}"
