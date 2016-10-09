@@ -1,0 +1,15 @@
+---
+- hosts: mesos-agent
+  vars:
+    package_url: https://apache.bintray.com/aurora/ubuntu-trusty/aurora-executor_0.15.0_amd64.deb
+    package_local_path: /tmp/aurora-executor_0.15.0_amd64.deb
+  tasks:
+    - name: download aurora package
+      get_url:
+        url: "{{ package_url }}"
+        dest: "{{ package_local_path }}"
+
+    - name: install aurora
+      apt:
+        deb: "{{ package_local_path }}"
+      become: true

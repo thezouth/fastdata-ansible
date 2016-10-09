@@ -1,0 +1,31 @@
+- hosts: mesos-master
+  vars:
+    config_file: /etc/default/aurora-scheduler
+    zk_endpoints: 10.0.0.4:2181,10.0.0.5:2181,10.0.0.6:2181
+    config_vars:
+      ZK_ENDPOINTS: "\"{{ zk_endpoints }}\""
+      CLUSTER_NAME: "\"zouth-analytics\""
+      QUORUM_SIZE: 2
+      THERMOS_EXECUTOR_FLAGS: "\"--announcer-ensemble {{ zk_endpoints }}\""
+      HOSTNAME: "\"{{ inventory_hostname }}\""
+  tasks:
+    - name: stop service
+      service:
+        name: aurora-scheduler
+        state: stopped
+      become: true
+
+    - name: change config values
+      lineinfile:
+        dest: "{{ config_file }}"
+        regexp: "^{{ item.key }}="
+        line: "{{ item.key }}={{ item.value }}"
+        backup: true
+      with_dict: "{{ config_vars }}"
+      become: true
+
+    - name: start service
+      service:
+        name: aurora-scheduler
+        state: started
+      become: true

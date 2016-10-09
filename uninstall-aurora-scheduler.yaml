@@ -1,0 +1,8 @@
+- hosts: mesos-master
+  tasks:
+  - name: remove existing package
+    apt:
+      name: aurora-scheduler
+      purge: yes
+      state: absent
+    become: true
