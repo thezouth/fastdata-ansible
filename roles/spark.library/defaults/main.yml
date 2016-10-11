@@ -1,0 +1,8 @@
+---
+spark_library_archive_name: spark-library.tar.gz
+spark_library_archive_path: "{{ archive_storage_path | default('.') }}/{{ spark_library_archive_name }}"
+spark_library_root_dir: "/home/{{ spark_user }}"
+spark_library_dir: "{{ spark_library_root_dir }}/library"
+
+was_spark_executor: "{{ inventory_hostname in groups['spark'] }}"
+was_spark_driver: "{{ inventory_hostname in groups['spark-driver'] }}"
