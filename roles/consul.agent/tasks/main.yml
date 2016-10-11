@@ -1,0 +1,12 @@
+---
+- name: copy config.json to {{ consul_conf_dir }}
+  template:
+    src: config.json.j2
+    dest: "{{ consul_conf_dir }}/config.json"
+  become: true
+
+- name: set upstart service
+  template:
+    src: consul_upstart.conf.j2
+    dest: /etc/init/consul.conf
+  become: true
