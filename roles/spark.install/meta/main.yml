@@ -1,0 +1,7 @@
+---
+dependencies:
+  - role: spark.common
+    
+  - role: common.sudoers
+    sudoer_user: "{{ spark_user }}"
+    sudoer_group: "{{ spark_group }}"
