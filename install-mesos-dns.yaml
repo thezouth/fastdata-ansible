@@ -1,8 +1,0 @@
----
-- hosts: mesos-dns
-#   vars:
-#     archive_storage_path: "./archives"
-  roles:
-    - role: mesos
-      mesos_install: false
-      mesos_install_mesos_dns: true

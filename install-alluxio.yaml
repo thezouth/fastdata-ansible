@@ -1,6 +1,0 @@
----
-- hosts: alluxio
-  vars:
-    alluxio_install: true
-  roles:
-    - alluxio

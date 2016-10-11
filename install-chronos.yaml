@@ -1,5 +1,0 @@
----
-- hosts: all
-  roles:
-    - role: mesos
-      mesos_install_chronos: true

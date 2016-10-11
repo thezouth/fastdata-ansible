@@ -1,7 +1,0 @@
----
-- hosts: riemann
-  vars:
-    riemann_install: true
-  roles:
-    - riemann
-

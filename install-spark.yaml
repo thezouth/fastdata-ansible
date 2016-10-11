@@ -1,6 +1,0 @@
----
-- hosts: spark
-  vars:
-    spark_install: true
-  roles:
-    - spark

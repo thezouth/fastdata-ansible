@@ -1,5 +1,0 @@
----
-- hosts: mesos-agent
-  roles:
-    - role: mesos
-      mesos_install_docker: true
