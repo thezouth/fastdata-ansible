@@ -1,8 +1,0 @@
----
-mesos_docker_required_apt_packages:
-  - apt-transport-https
-  - ca-certificates
-  
-mesos_docker_apt_key_server: hkp://p80.pool.sks-keyservers.net:80
-mesos_docker_apt_id: 58118E89F3A912897C070ADBF76221572C52609D
-mesos_docker_deb_repo: deb https://apt.dockerproject.org/repo ubuntu-trusty main

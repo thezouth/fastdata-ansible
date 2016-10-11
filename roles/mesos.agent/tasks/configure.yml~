@@ -1,7 +1,0 @@
----
-- name: mesos agent settings
-  copy: content="{{ item.value }}" dest="{{ mesos_agent_config_path }}/{{ item.key }}"
-  with_dict: "{{ mesos_agent_default_configurations | combine(mesos_agent_configurations) }}"
-  
-- name: clean mesos agent settings
-  shell: find {{ mesos_agent_config_path }} - type f -empty -delete

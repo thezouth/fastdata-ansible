@@ -1,3 +1,0 @@
----
-mesos_agent_hostname: "{{ mesos_hostname }}"
-mesos_agent_ip: "{{ mesos_ip }}"
