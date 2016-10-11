@@ -1,0 +1,13 @@
+---
+- name: initialize mesos agent
+  include: initialize.yml
+  become: true
+  tags:
+    - initialize
+
+- name: configure meos agent
+  include: configure.yml
+  notify: restart mesos agent service
+  become: true
+  tags:
+    - configure

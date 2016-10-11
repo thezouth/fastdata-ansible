@@ -1,0 +1,17 @@
+---
+- name: add mesosphere keyserver
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: E56151BF
+
+- name: check linux distribution and release
+  set_fact: distribution="{{ ansible_distribution | lower }}" codename="{{ ansible_distribution_release | lower }}"
+
+- name: add memsosphere repository
+  apt_repository:
+    repo: "deb http://repos.mesosphere.com/{{ distribution }} {{ codename }} main"
+    filename: mesosphere.list
+    update_cache: yes
+
+- name: install mesos package
+  apt: name=mesos

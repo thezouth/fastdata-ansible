@@ -1,0 +1,7 @@
+{%- if not mesos_zk.lstrip().startswith('zk://') -%}
+zk://
+{%- endif -%}
+{{ mesos_zk }}
+{%- if not mesos_zk.rstrip().endswith('/mesos') -%}
+/mesos
+{%- endif -%}

@@ -1,0 +1,4 @@
+---
+zk_config_dir: /etc/zookeeper
+zk_myid_path: "{{ zk_config_dir }}/myid"
+zk_config_path: "{{ zk_config_dir }}/conf/zoo.cfg"

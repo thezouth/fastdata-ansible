@@ -1,0 +1,5 @@
+---
+mesos_agent_configurations:
+  hostname: "{{ mesos_agent_hostname }}"
+  ip: "{{ mesos_agent_ip }}"
+  containerizers: "{{ mesos_agent_containerizers }}"

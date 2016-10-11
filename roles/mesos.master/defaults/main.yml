@@ -1,0 +1,4 @@
+---
+mesos_master_hostname: "{{ mesos_hostname }}"
+mesos_master_ip: "{{ mesos_ip }}"
+mesos_master_quorum: "{{ (groups['mesos-master']|length / 2)|round|int  }}"

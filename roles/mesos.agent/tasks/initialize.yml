@@ -1,0 +1,20 @@
+---
+- name: stop zookeeper service
+  service:
+    name: zookeeper
+    state: stopped
+
+- name: disable zookeper service
+  copy:
+    content: "manual"
+    dest: "{{ mesos_zk_override_path }}"
+    
+- name: mesos master service
+  service:
+    name: mesos-master
+    state: stopped
+
+- name: disable mesos master
+  copy:
+    content: "manual"
+    dest: "{{ mesos_master_override_path }}"

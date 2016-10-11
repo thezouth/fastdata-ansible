@@ -1,0 +1,11 @@
+---
+- name: configure marathon - add configuration file
+  copy:
+    content: "{{ item.value }}"
+    dest: "{{ mesos_marathon_config_dir }}/{{ item.key }}"
+  with_dict: "{{ mesos_marathon_configurations }}"
+  notify: restart marathon service
+
+- name: configure marathon - delete empty configuration
+  shell: find {{ mesos_marathon_config_dir }} -type f -empty | xargs rm
+  notify: restart marathon service

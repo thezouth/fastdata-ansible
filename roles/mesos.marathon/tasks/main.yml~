@@ -1,0 +1,12 @@
+---
+- name: install marathon
+  include: install.yml
+  become: true
+  tags:
+    - marathon-install
+    
+- name: configure marathon
+  include: configure.yml
+  become: true
+  tags:
+    - marthon-configure

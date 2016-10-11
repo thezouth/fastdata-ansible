@@ -1,0 +1,16 @@
+---
+- name: Install mesos master
+  hosts: mesos-master
+  roles:
+    - mesos.master
+    - mesos.marathon
+  tags:
+    - master
+    - marathon
+
+- hosts: mesos-agent
+  roles:
+    - mesos.agent
+    - mesos.docker
+  tags:
+    - agent

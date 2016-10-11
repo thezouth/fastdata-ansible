@@ -1,0 +1,12 @@
+---
+- name: restart zookeeper service
+  service:
+    name: zookeeper
+    state: restarted
+  become: true
+
+- name: restart mesos master service
+  service:
+    name: mesos-master
+    state: restarted
+  become: true

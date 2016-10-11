@@ -1,0 +1,34 @@
+---
+- name: install prerequisites packages
+  apt: name="{{ item }}"
+  become: true
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+
+- name: add apt key for docker repsotiory
+  apt_key:
+    keyserver: "{{ mesos_docker_apt_key_server }}"
+    id: "{{ mesos_docker_apt_id }}"
+  become: true
+
+- name: add docker repository
+  apt_repository:
+    repo: deb https://apt.dockerproject.org/repo ubuntu-trusty main
+  become: true
+
+- name: update apt-get
+  apt: update_cache=yes
+  become: true
+  
+- name: install docker-engine
+  apt: name=docker-engine
+  become: true
+
+- name: start docker daemon
+  service: name=docker state=started
+  become: true
+
+- name: set mesos-agent containerizer docker support
+  shell: echo "docker,mesos" > /etc/mesos-slave/containerizers
+  become: true

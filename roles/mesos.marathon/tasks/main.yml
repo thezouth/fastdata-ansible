@@ -1,0 +1,13 @@
+---
+- name: install marathon
+  include: install.yml
+  become: true
+  tags:
+    - install
+    
+- name: configure marathon
+  include: configure.yml
+  become: true
+  notify: restart marathon service
+  tags:
+    - configure

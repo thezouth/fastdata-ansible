@@ -1,0 +1,6 @@
+---
+- name: restart marathon service
+  service:
+    name: marathon
+    state: restarted
+  become: true

@@ -1,0 +1,16 @@
+---
+- name: configure zookeper server id
+  copy:
+    content: "{{ zk_id }}"
+    dest: "{{ zk_myid_path }}"
+  notify: restart zookeeper service
+  tags:
+    - zookeeper-config
+  
+- name: configure zookeeper configuration
+  template:
+    src: "zk_conf.j2"
+    dest: "{{ zk_config_path }}"
+  notify: restart zookeeper service
+  tags:
+    - zookeeper-config
