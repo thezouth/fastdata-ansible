@@ -1,4 +1,4 @@
 ---
 mesos_marathon_config_dir: /etc/marathon/conf
-mesos_marathon_hostname: "{{ mesos_ip }}"
+mesos_marathon_hostname: "{{ mesos_hostname }}"
 mesos_marathon_webui_url: "http://{{ mesos_marathon_hostname }}:8080"
