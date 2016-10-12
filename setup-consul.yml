@@ -17,7 +17,7 @@
     - consul.agent
 
   tags:
-    - consul-client
+    - consul-agent
 
 - name: Configure consul client for consul nameserver
   hosts: consul
