@@ -3,6 +3,7 @@ mesos_agent_containerizers: ''
 mesos_agent_hostname: "{{ mesos_hostname }}"
 mesos_agent_ip: "{{ mesos_ip }}"
 mesos_agent_launcher: ''
+mesos_agent_resources: ''
 
   
 
