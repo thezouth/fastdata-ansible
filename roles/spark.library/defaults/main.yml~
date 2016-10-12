@@ -1,2 +1,0 @@
----
-spark_library_dir: "/home/{{ spark_user }}/library"
