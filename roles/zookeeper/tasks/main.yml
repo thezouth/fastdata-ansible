@@ -1,3 +1,6 @@
 ---
 - include: configure.yml
+  notify: restart zookeeper service
   become: true
+  tags:
+    - zookeeper-configure
