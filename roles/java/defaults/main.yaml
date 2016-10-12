@@ -1,4 +1,4 @@
 ---
-java_oracle_installer: "oracle-java7-installer"
+java_oracle_installer: "oracle-java8-installer"
 java_repository_ppa: "ppa:webupd8team/java"
 
