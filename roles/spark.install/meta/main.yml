@@ -2,6 +2,6 @@
 dependencies:
   - role: spark.common
     
-  - role: common.sudoers
+  - role: common.sudoer
     sudoer_user: "{{ spark_user }}"
     sudoer_group: "{{ spark_group }}"

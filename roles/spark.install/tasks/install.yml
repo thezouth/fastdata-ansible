@@ -1,20 +1,20 @@
 ---
 - name: download spark archive
-  delegate_to: "{{ spark_installer }}"
-  get_url:
+  local_action:  get_url
+  args:
     url: "{{ spark_archive_url }}"
     dest: "{{ spark_archive_path }}"
   run_once: true
 
 - name: check spark archive root path
-  delegate_to: "{{ spark_installer }}"
   local_action: shell tar ztf {{ spark_archive_path }} | head -1 | xargs basename
   register: sparkarchiveroot
   run_once: true
 
 - name: check spark installation directory
   set_fact: spark_install_dir="{{ spark_install_root_dir }}/{{ sparkarchiveroot.stdout }}"
-
+  run_once: true
+  
 - name: unarchive spark distribution
   unarchive:
     src: "{{ spark_archive_path }}"
