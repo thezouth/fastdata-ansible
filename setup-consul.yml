@@ -26,5 +26,4 @@
     - consul.resolver
 
   tags:
-    - consul-server
-    - consul-client
+    - consul-resolver
