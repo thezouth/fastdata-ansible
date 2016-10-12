@@ -35,6 +35,7 @@ mesos_stop: false
 mesos_install_marathon: true
 mesos_install_docker: false
 mesos_install_mesos_dns: false
+mesos_install_chronos: false
 
 # Marathon
 mesos_marathon_api_url: ""

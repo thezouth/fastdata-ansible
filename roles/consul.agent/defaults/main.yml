@@ -1,0 +1,8 @@
+---
+consul_agent_start_join: []
+consul_agent_bind_addr: nil
+
+consul_agent_params:
+  server: false
+  start_join: "{{ consul_agent_start_join }}"
+  

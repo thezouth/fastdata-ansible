@@ -1,0 +1,3 @@
+---
+alluxio_master_hostname: "{{ ansible_eth0.ipv4.address }}"
+alluxio_worker_nodes: nil

@@ -1,0 +1,3 @@
+{% for zk_host in zk_hosts %}
+server.{{ loop.index }}={{ zk_host }}:{{ zk_server_port|default(2888) }}:{{ zk_client_port|default(3888) }}
+{% endfor %}

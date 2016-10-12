@@ -1,0 +1,6 @@
+---
+- name: restart mesos agent
+  service:
+    name: mesos-slave
+    state: restarted
+  become: true

@@ -1,0 +1,10 @@
+---
+- name: apply new settings
+  copy:
+    content: "{{ item.value }}"
+    dest: "{{ mesos_marathon_config_dir }}/{{ item.key }}"
+  with_dict: "{{ mesos_marathon_configurations }}"
+
+- name: clear unused settings
+  shell: find {{ mesos_marathon_config_dir }} -type f -empty -delete
+  changed_when: false

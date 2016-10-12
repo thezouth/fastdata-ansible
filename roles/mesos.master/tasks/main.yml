@@ -1,0 +1,16 @@
+---
+- name: initialize mesos master
+  include: initialize.yml
+  become: true
+  tags:
+    - initialize
+
+- name: configure mesos master
+  copy:
+    content: "{{ item.value }}"
+    dest: "{{ mesos_master_config_path }}/{{ item.key }}"
+  with_dict: "{{ mesos_master_default_configurations | combine(mesos_master_configurations) }}"
+  notify: restart mesos master service
+  become: true
+  tags:
+    - configure

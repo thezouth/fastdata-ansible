@@ -1,0 +1,17 @@
+---
+- name: create {{ sudoer_group }} group
+  group: name="{{ sudoer_group }}"
+  become: true
+
+- name: create {{ sudoer_user }} user
+  user: name="{{ sudoer_user }}" group="{{ sudoer_group }}"
+  become: true
+
+- name: update sudoer file in system
+  include: update-sudoer.yml
+  become: true
+
+- name: generate ssh access from master-slave
+  include: ssh-sudoer.yml
+  run_once: true
+  when: sudoer_ssh_key_access_generate

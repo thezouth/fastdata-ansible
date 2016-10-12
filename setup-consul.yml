@@ -1,0 +1,29 @@
+---
+- name: Install and configure consul server
+  hosts: consul-server
+
+  roles:
+    - consul.install
+    - consul.server
+
+  tags:
+    - consul-server
+
+- name: Install and configure consul client
+  hosts: consul-agent
+
+  roles:
+    - consul.install
+    - consul.agent
+
+  tags:
+    - consul-client
+
+- name: Configure consul client for consul nameserver
+  hosts: consul
+
+  roles:
+    - consul.resolver
+
+  tags:
+    - consul-resolver

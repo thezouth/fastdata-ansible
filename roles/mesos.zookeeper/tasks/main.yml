@@ -1,0 +1,8 @@
+---
+- name: configure mesos zookeeper configuration
+  template:
+    src: mesos_zk_conf.j2
+    dest: "{{ mesos_zk_path }}"
+  become: true
+  tags:
+    - mesos-zookeeper-config

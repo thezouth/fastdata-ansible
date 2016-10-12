@@ -1,0 +1,20 @@
+---
+
+- name: initialize master node
+  include: initialize.yml
+  become: true
+  tags:
+    - initialize
+
+- name: configure workers
+  include: workers.yml
+  when: alluxio_worker_nodes is defined
+  become: true
+  tags:
+    - workers
+    
+- name: configure master node options
+  include: configure.yml
+  become: true
+  tags:
+    - configure

@@ -1,0 +1,9 @@
+---
+- name: install apt package
+  apt:
+    name: marathon
+
+- name: create configuration directory
+  file:
+    path: "{{ mesos_marathon_config_dir }}"
+    state: directory

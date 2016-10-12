@@ -1,0 +1,16 @@
+---
+- name: configure zookeper server id
+  copy:
+    content: "{{ zk_id }}"
+    dest: "{{ zk_myid_path }}"
+
+- name: configure zookeeper configuration
+  blockinfile:
+    dest: "{{ zk_config_path }}"
+    block: "{{ lookup('template', 'zk_conf.j2', convert_data=False) }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK #"
+
+#- name: configure zookeeper configuration
+#  template:
+#    src: "zk_conf.j2"
+#    dest: "{{ zk_config_path }}"

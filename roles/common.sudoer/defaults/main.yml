@@ -1,0 +1,7 @@
+---
+sudoer_user: nil
+sudoer_group: nil
+
+sudoer_ssh_key_access_generate: false
+sudoer_ssh_key_master_node: nil
+sudoer_ssh_key_slave_nodes: nil

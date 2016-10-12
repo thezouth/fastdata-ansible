@@ -1,0 +1,30 @@
+---
+- name: download consul archive file
+  get_url:
+    url: "{{ consul_archive_url }}"
+    dest: /tmp/consul.zip
+
+- name: install zip package
+  apt: name=zip
+  become: true
+
+- name: unarchive consul to /usr/local/bin
+  unarchive:
+    src: /tmp/consul.zip
+    dest: /usr/local/bin
+    creates: /usr/local/bin/consul
+    copy: no
+    mode: 0755
+  become: true
+
+- name: make a directory for configuration
+  file:
+    path: "{{ consul_conf_dir }}"
+    state: directory
+  become: true
+
+- name: make a directory for data
+  file:
+    path: "{{ consul_data_dir }}"
+    state: directory
+  become: true

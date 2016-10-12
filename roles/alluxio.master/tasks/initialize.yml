@@ -1,0 +1,10 @@
+---
+- name: bootstrap alluxio configuration
+  shell: sudo -u "{{ alluxio_user }}" ./bin/alluxio bootstrapConf {{ alluxio_master_hostname }} {{ alluxio_underfsstorage }}
+  args:
+    chdir: "{{ alluxio_home_dir }}"
+
+- name: format under filesystem storage
+  shell: sudo -u "{{ alluxio_user }}" ./bin/alluxio format
+  args:
+    chdir: "{{ alluxio_home_dir }}"

@@ -1,0 +1,3 @@
+---
+was_consul_server: "{{ inventory_hostname in groups['consul-server'] }}"
+was_consul_agent: "{{ not was_consul_server }}"

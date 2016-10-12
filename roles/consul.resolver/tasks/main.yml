@@ -1,0 +1,10 @@
+---
+- name: update head file of resolv.conf
+  lineinfile:
+    dest: /etc/resolvconf/resolv.conf.d/head
+    line: "nameserver {{ consul_nameserver }}"
+  become: true
+
+- name: update resolvconf service
+  shell: resolvconf -u
+  become: true

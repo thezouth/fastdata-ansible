@@ -1,0 +1,12 @@
+description "Alluxio {{ alluxio_component }} service"
+
+start on (local-filesystems and net-device-up IFACE={{ alluxio_binding_network_interface | default('eth0') }})
+stop on runlevel [!12345]
+
+respawn
+
+setuid {{ alluxio_user }}
+setgid {{ alluxio_group }}
+
+exec {{ alluxio_home_dir }}/bin/alluxio-start.sh {{ alluxio_component }}
+pre-stop exec {{ alluxio_home_dir }}/bin/alluxio-stop.sh {{ alluxio_component }}

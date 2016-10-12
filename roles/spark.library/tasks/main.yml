@@ -1,0 +1,40 @@
+---
+- name: copy spark library archive
+  unarchive:
+    src: "{{ spark_library_archive_path }}"
+    dest: "{{ spark_library_dir }}"
+    owner: "{{ spark_user }}"
+    group: "{{ spark_group }}"
+    force: yes
+  become: true
+
+- name: duplicate spark-defaull.conf if missing
+  copy:
+    src: "{{ spark_default_config_file}}.template"
+    dest: "{{ spark_default_config_file }}"
+    remote_src: yes
+    owner: "{{ spark_user }}"
+    group: "{{ spark_group }}"
+  become: true
+
+- name: update spark classpath for executor
+  lineinfile:
+    dest: "{{ spark_default_config_file }}"
+    regexp: '^spark.executor.extraClassPath '
+    insertafter: "#spark.executor.extraClassPath"
+    line: "spark.executor.extraClassPath    {{ spark_executor_extra_class_path | join(':') }}"
+    owner: "{{ spark_user }}"
+    group: "{{ spark_group }}"
+  become: true
+  when: was_spark_executor
+
+- name: update spark classpath for driver
+  lineinfile:
+    dest: "{{ spark_default_config_file }}"
+    regexp: '^spark.driver.extraClassPath '
+    insertafter: "#spark.driver.extraClassPath"
+    line: "spark.driver.extraClassPath    {{ spark_driver_extra_class_path | join(':') }}"
+    owner: "{{ spark_user }}"
+    group: "{{ spark_group }}"
+  become: true
+  when: was_spark_driver

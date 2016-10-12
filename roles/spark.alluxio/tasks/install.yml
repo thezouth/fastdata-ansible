@@ -1,0 +1,14 @@
+---
+- name: download alluxio spark client library
+  local_action: get_url
+  args:
+    url: "{{ spark_alluxio_archive_url }}"
+    dest: "{{ spark_alluxio_archive_dest }}"
+  run_once: true
+
+- name: distribute spark alluxio client library 
+  copy:
+    src: "{{ spark_alluxio_archive_path }}"
+    dest: "{{ spark_alluxio_install_dir }}"
+    owner: "{{ spark_user }}"
+    group: "{{ spark_group }}"

@@ -1,5 +1,0 @@
----
-- hosts: all
-  roles:
-    - role: mesos
-      mesos_start: true

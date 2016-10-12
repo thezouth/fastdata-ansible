@@ -1,0 +1,6 @@
+---
+- name: install spark
+  include: install.yml
+  become: true
+  tags:
+    - install

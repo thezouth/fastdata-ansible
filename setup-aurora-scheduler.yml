@@ -1,0 +1,45 @@
+---
+- hosts: mesos-master
+  vars:
+    aurora_url: https://apache.bintray.com/aurora/ubuntu-trusty/aurora-scheduler_0.15.0_amd64.deb
+    aurora_package: /tmp/aurora-scheduler_0.15.0_amd64.deb
+  tasks:
+  - name: download aurora package
+    get_url:
+      url: "{{ aurora_url }}"
+      dest: "{{ aurora_package }}"
+
+  - name: install aurora
+    apt:
+      deb: "{{ aurora_package }}"
+    become: true
+
+  - name: stop auto-started aurora service
+    service:
+      name: aurora-scheduler
+      state: stopped
+    become: true
+
+  - name: ensure db dir absence
+    file:
+      path: /var/lib/aurora/scheduler/db
+      state: absent
+    become: true
+
+  - name: create scheduler db dir
+    file:
+      path: /var/lib/aurora/scheduler/db
+      state: directory
+      owner: aurora
+      group: aurora
+    become: true
+
+  - name: initialize the scheduler database
+    shell: sudo -u aurora mesos-log initialize --path=/var/lib/aurora/scheduler/db
+    become: true
+
+  - name: start aurora service
+    service:
+      name: aurora-scheduler
+      state: started
+    become: true

@@ -1,0 +1,13 @@
+---
+consul_archive_url: https://releases.hashicorp.com/consul/0.7.0/consul_0.7.0_linux_amd64.zip
+consul_conf_dir: /etc/consul.d
+consul_data_dir: /var/lib/consul
+
+consul_bind_addr: "0.0.0.0"
+consul_client_addr: "0.0.0.0"
+
+consul_common_params:
+  node_name: "{{ consul_node | default(inventory_hostname) }}"
+  data_dir: "{{ consul_data_dir }}"
+  bind_addr: "{{ consul_bind_addr }}"
+  client_addr: "{{ consul_client_addr }}"

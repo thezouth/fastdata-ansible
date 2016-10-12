@@ -1,0 +1,7 @@
+---
+- name: install  upstart script for alluxio-{{ alluxio_component | mandatory }} service
+  template:
+    src: upstart.conf.j2
+    dest: /etc/init/alluxio-{{ alluxio_component | mandatory }}.conf
+  become: true
+  

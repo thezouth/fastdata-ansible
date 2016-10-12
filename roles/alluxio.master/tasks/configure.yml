@@ -1,0 +1,10 @@
+---
+- name: change master hostname
+  lineinfile:
+    dest: "{{ alluxio_home_dir }}/conf/alluxio-env.sh"
+    regexp: '^ALLUXIO_MASTER_HOSTNAME='
+    insertafter: '#ALLUXIO_MASTER_HOSTNAME='
+    line: "ALLUXIO_MASTER_HOSTNAME=\"{{ alluxio_master_hostname }}\""
+    owner: "{{ alluxio_user }}"
+    group: "{{ alluxio_group }}"
+  when: alluxio_master_hostname is defined

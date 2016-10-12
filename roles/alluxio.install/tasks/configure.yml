@@ -1,0 +1,26 @@
+---
+- name: format alluxio master node
+  shell: sudo -u "{{ alluxio_user }}" ./bin/alluxio format
+  args:
+    chdir: "{{ alluxio_home_dir }}"
+  when: was_alluxio_master
+  run_once: true
+  become: true
+
+- name: add worker nodes in conf/workers
+  template:
+    src: workers.j2
+    dest: "{{ alluxio_home_dir }}/conf/workers"
+    owner: "{{ alluxio_user }}"
+    group: "{{ alluxio_group }}"
+  when: was_alluxio_master
+  run_once: true
+  become: true
+
+- name: copy master configurartion to slave nodes
+  shell: sudo -u "{{ alluxio_user }}" ./bin/alluxio copyDir conf
+  args:
+    chdir: "{{ alluxio_home_dir }}"
+  when: was_alluxio_master
+  run_once: true
+  become: true

@@ -1,0 +1,10 @@
+---
+consul_server_bootstrap: false
+consul_server_start_join: []
+
+consul_server_params:
+  bootstrap: "{{ consul_server_bootstrap }}"
+  server: true
+  start_join: "{{ consul_server_start_join }}"
+  ports:
+    dns: 53

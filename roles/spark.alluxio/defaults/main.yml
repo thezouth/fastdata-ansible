@@ -1,0 +1,4 @@
+---
+spark_alluxio_archive_url: http://downloads.alluxio.org/downloads/files/1.2.0/alluxio-core-client-spark-1.2.0-jar-with-dependencies.jar
+spark_alluxio_archive_dest: "{{ archive_storage_path | default('.') }}/{{ spark_alluxio_archive_url | basename }}"
+spark_alluxio_install_dir: "{{ spark_home_dir }}/jars"

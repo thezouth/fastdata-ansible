@@ -1,0 +1,4 @@
+---
+mesos_marathon_configurations:
+    hostname: "{{ mesos_marathon_hostname }}"
+    webui_url: "{{ mesos_marathon_webui_url }}"

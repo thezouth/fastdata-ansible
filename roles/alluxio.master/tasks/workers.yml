@@ -1,0 +1,14 @@
+---
+- name: create worker setting file
+  template:
+    src: workers.j2
+    dest: "{{ alluxio_worker_config_file }}"
+    owner: "{{ alluxio_user }}"
+    group: "{{ alluxio_group }}"
+  become: true
+
+- name: copy configurations to workers
+  shell: sudo -u "{{ alluxio_user }}" ./bin/alluxio copyDir conf
+  args:
+    chdir: "{{ alluxio_home_dir }}"
+  become: true  

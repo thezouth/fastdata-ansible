@@ -1,0 +1,10 @@
+---
+- name: stop mesos agent (master)
+  service:
+    name: mesos-slave
+    state: stopped
+
+- name: disable mesos agent (master)
+  copy:
+    content: "manual"
+    dest: "{{ mesos_agent_override_path }}"
