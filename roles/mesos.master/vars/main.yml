@@ -1,5 +1,6 @@
 ---
 mesos_master_configurations:
+  cluster: "{{ mesos_master_cluster }}"
   hostname: "{{ mesos_master_hostname }}"
   ip: "{{ mesos_master_ip }}"
   quorum: "{{ mesos_master_quorum }}"
