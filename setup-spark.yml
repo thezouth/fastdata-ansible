@@ -1,0 +1,6 @@
+---
+- name: Install spark environment
+  hosts: spark
+  roles:
+    - spark.install
+  
