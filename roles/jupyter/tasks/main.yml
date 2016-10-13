@@ -1,0 +1,39 @@
+---
+- name: install pip
+  apt: name=python-pip update=true
+  become: true
+
+- name: install jupyter
+  pip: name=jupyter
+  become: true
+
+- name: install py4j for pyspark
+  pip: name=py4j
+  become: true
+
+- name: create notebook folder
+  file:
+    path: /usr/local/share/jupyter/notebook
+    state: directory
+  become: true
+
+- name: create pyspark kernel folder
+  file:
+    path: /usr/local/share/jupyter/kernels/pyspark
+    state: directory
+  become: true
+
+- name: create pyspark kernel config file
+  template:
+    src: pyspark_kernel.json.j2
+    dest: /usr/local/share/jupyter/kernels/pyspark/kernel.json
+
+- name: set upstart service
+  template:
+    src: upstart.conf.j2
+    dest: /etc/init/jupyter.conf
+  become: true
+
+- name: start jupyter service
+  service: name=jupyter state=started
+  become: true
