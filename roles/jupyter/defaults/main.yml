@@ -1,0 +1,5 @@
+---
+jupyter_spark_master: mesos://mesos-master-01.node.consul:5050
+jupyter_spark_executors: 2
+jupyter_spark_executor_cores: 2
+jupyter_spark_executor_memory: 2G
