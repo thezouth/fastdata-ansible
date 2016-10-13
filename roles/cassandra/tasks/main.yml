@@ -1,0 +1,29 @@
+---
+- name: Add datastax key
+  apt_key: url={{ cassandra_repo_key_url }}
+  tags:
+    - install-cassandra
+
+- name: Add datastax ppa
+  apt_repository: repo={{ cassandra_deb_repo }} update_cache=yes
+  tags:
+    - install-cassandra
+
+- name: Install datastax cassandra 3.0
+  apt: name={{ item }} 
+  with_items:
+    - dsc30
+    - cassandra
+    - cassandra-tools
+  tags:
+    - install-cassandra
+
+- name: Config cassandra
+  template: dest={{ cassandra_config_file }} src={{ cassandra_config_file_template }} force=yes
+  tags:
+    - configure-cassandra
+
+- name: Start cassandra
+  service: name=cassandra state=started
+  tags:
+    - start-cassandra

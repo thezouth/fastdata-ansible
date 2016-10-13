@@ -1,0 +1,9 @@
+---
+cassandra_deb_repo: deb http://debian.datastax.com/community stable main
+cassandra_repo_key_url: http://debian.datastax.com/debian/repo_key
+
+cassandra_config_file: /etc/cassandra/cassandra.yaml
+cassandra_config_file_template: cassandra.yaml.j2
+cassandra_cluster_name: MarketAnyware PoC
+cassandra_seeds_ip: 10.10.1.5,10.10.1.6
+cassandra_endpoint_snitch: GossipingPropertyFileSnitch
