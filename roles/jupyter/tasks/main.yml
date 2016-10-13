@@ -3,7 +3,7 @@
   apt: name=python-pip
   become: true
 
-- name: install related dependencies 
+- name: install related dependencies
   apt: name={{ item }}
   become: true
   with_items:
@@ -13,7 +13,7 @@
     - libpng-dev
     - libjpeg8-dev
     - libfreetype6-dev
- 
+
 - name: install jupyter
   pip: name=jupyter
   become: true
@@ -39,6 +39,11 @@
     src: pyspark_kernel.json.j2
     dest: /usr/local/share/jupyter/kernels/pyspark/kernel.json
 
+- name: set spark defaults
+  template:
+    src: jupyter_spark_config.j2
+    dest: {{ jupyter_spark_home }}/conf/spark-defaults.conf
+
 - name: set upstart service
   template:
     src: upstart.conf.j2
@@ -52,7 +57,6 @@
 - name: install external python dependencies
   pip: name={{ item }}
   become: true
-  with_items: 
+  with_items:
     - matplotlib
     - numpy
-

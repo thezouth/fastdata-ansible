@@ -1,0 +1,9 @@
+spark.master {{ jupyter_spark_master }}
+
+spark.executor.cores {{ jupyter_spark_executor_cores }}
+spark.executor.memory {{ jupyter_spark_executor_memory }}
+
+#dynamic allocation mode
+spark.dynamicAllocation.enabled true
+spark.dynamicAllocation.initialExecutors {{ jupyter_spark_initial_executors }}
+spark.dynamicAllocation.maxExecutors {{ jupyter_spark_max_executors }}
