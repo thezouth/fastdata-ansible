@@ -1,8 +1,19 @@
 ---
 - name: install pip
-  apt: name=python-pip update=true
+  apt: name=python-pip
   become: true
 
+- name: install related dependencies 
+  apt: name={{ item }}
+  become: true
+  with_items:
+    - build-essential
+    - python-dev
+    - pkg-config
+    - libpng-dev
+    - libjpeg8-dev
+    - libfreetype6-dev
+ 
 - name: install jupyter
   pip: name=jupyter
   become: true
@@ -37,3 +48,11 @@
 - name: start jupyter service
   service: name=jupyter state=started
   become: true
+
+- name: install external python dependencies
+  pip: name={{ item }}
+  become: true
+  with_items: 
+    - matplotlib
+    - numpy
+
