@@ -42,7 +42,7 @@
 - name: set spark defaults
   template:
     src: jupyter_spark_config.j2
-    dest: {{ jupyter_spark_home }}/conf/spark-defaults.conf
+    dest: "{{ jupyter_spark_home }}/conf/spark-defaults.conf"
 
 - name: set upstart service
   template:

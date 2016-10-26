@@ -5,4 +5,4 @@ jupyter_spark_master: mesos://mesos-master-01.node.consul:5050
 jupyter_spark_executor_cores: 2
 jupyter_spark_executor_memory: 2G
 jupyter_spark_max_executors: 4
-juptyer_spark_initial_executors: 1
+jupyter_spark_initial_executors: 1
