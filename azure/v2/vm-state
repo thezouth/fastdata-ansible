@@ -1,0 +1,14 @@
+#!/bin/bash
+if [ $# -ne 2 ]; then
+  echo "webscal3r cli-tools change status vm in resource_group"
+  echo "USAGE: $0 <start|stop|deallocate> <resource_group>"
+  echo
+  exit 1
+fi
+
+parallel_process=32
+status_cmd=$1
+resource_group=$2
+
+./vm-list $resource_group | xargs -L 1 -P $parallel_process azure vm $status_cmd $resource_group
+

@@ -1,0 +1,13 @@
+#!/bin/bash
+parallel_process=32
+status_cmd=deallocate
+resource_group=mka-bigdata
+
+if [ x$1 = 'x-t' ]; then
+  echo DRY RUN
+  echo resource group: $resource_group
+  ./vm-list $resource_group | xargs -L 1 -P $parallel_process echo deallocate
+else
+  ./vm-list $resource_group | xargs -L 1 -P $parallel_process azure vm $status_cmd $resource_group
+fi
+

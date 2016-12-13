@@ -1,0 +1,4 @@
+#!/bin/bash
+resource_group=$1
+azure vm list | grep -i $resource_group | awk '{print $3}' | grep -v master01
+
